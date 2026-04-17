@@ -12,6 +12,7 @@ const MerchantDashboard = () => {
     const { showToast } = useToast();
     const navigate = useNavigate();
     const [orders, setOrders] = useState([]);
+    const [allOrdersData, setAllOrdersData] = useState([]);
     const [foods, setFoods] = useState([]);
     const [loading, setLoading] = useState(true);
     const [soundEnabled, setSoundEnabled] = useState(true);
@@ -75,10 +76,12 @@ const MerchantDashboard = () => {
     const fetchData = async () => {
         try {
             const allOrders = await ordersAPI.get();
-            const liveOrders = allOrders.filter(o => {
-                const matchesStatus = ['pending', 'confirmed', 'preparing', 'ready'].includes(o.status);
-                const matchesRestaurant = user?.restaurantName ? o.items?.some(it => it.restaurant === user.restaurantName) : true;
-                return matchesStatus && matchesRestaurant;
+            const restaurantOrders = allOrders.filter(o => {
+                return user?.restaurantName ? o.items?.some(it => it.restaurant === user.restaurantName) : true;
+            });
+            
+            const liveOrders = restaurantOrders.filter(o => {
+                return ['pending', 'confirmed', 'preparing', 'ready', 'out_for_delivery'].includes(o.status);
             });
             
             const pendingOrders = liveOrders.filter(o => o.status === 'pending');
@@ -88,6 +91,7 @@ const MerchantDashboard = () => {
             }
             lastOrderCount.current = pendingOrders.length;
             setOrders(liveOrders);
+            setAllOrdersData(restaurantOrders);
 
             const allFoods = await foodsAPI.get();
             const restaurantFoods = user?.restaurantName ? allFoods.filter(f => f.restaurant === user.restaurantName) : allFoods;
@@ -102,8 +106,8 @@ const MerchantDashboard = () => {
     // Get customer data from orders
     const customerData = (() => {
         const customers = {};
-        if (Array.isArray(orders)) {
-            orders.forEach(o => {
+        if (Array.isArray(allOrdersData)) {
+            allOrdersData.forEach(o => {
                 if (o.customerPhone || o.customerName || o.user) {
                     const key = o.customerPhone || o.user?.phone || 'unknown';
                     if (!customers[key]) {
@@ -124,7 +128,7 @@ const MerchantDashboard = () => {
     })();
 
     // Calculate completed orders for delivery history
-    const completedOrdersList = Array.isArray(orders) ? orders.filter(o => o?.status === 'delivered') : [];
+    const completedOrdersList = Array.isArray(allOrdersData) ? allOrdersData.filter(o => o?.status === 'delivered') : [];
 
     useEffect(() => {
         fetchData();
@@ -444,7 +448,7 @@ const MerchantDashboard = () => {
                         <Trophy size={24} />
                     </div>
                     <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>Revenue Today</div>
-                    <div style={{ fontSize: '3rem', fontWeight: 'bold', color: '#10b981', margin: '0.5rem 0' }}>₹{orders.reduce((s, o) => s + (o.total || 0), 0)}</div>
+                    <div style={{ fontSize: '3rem', fontWeight: 'bold', color: '#10b981', margin: '0.5rem 0' }}>₹{allOrdersData.filter(o => o.status !== 'cancelled').reduce((s, o) => s + (o.total || 0), 0)}</div>
                     <div style={{ fontSize: '0.85rem', color: '#10b981', fontWeight: 600 }}>Total Sales</div>
                 </motion.div>
 
@@ -486,7 +490,7 @@ const MerchantDashboard = () => {
                         <Target size={24} />
                     </div>
                     <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>Delivered</div>
-                    <div style={{ fontSize: '3rem', fontWeight: 'bold', color: '#8b5cf6', margin: '0.5rem 0' }}>{orders.filter(o => o.status === 'delivered').length}</div>
+                    <div style={{ fontSize: '3rem', fontWeight: 'bold', color: '#8b5cf6', margin: '0.5rem 0' }}>{completedOrdersList.length}</div>
                     <div style={{ fontSize: '0.85rem', color: '#8b5cf6', fontWeight: 600 }}>Completed</div>
                 </motion.div>
             </motion.div>
