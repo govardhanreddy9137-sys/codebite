@@ -47,7 +47,7 @@ const Cart = () => {
     const personalTotal = cart.reduce((sum, item) => sum + (Number(item.price) || 0) * (Number(item.quantity) || 0), 0);
     const hasPassInCart = cart.some(item => item.isPass);
     const isPassApplicable = Boolean(hasWeeklyPass) || hasPassInCart;
-    const deliveryCharge = isPassApplicable ? 0 : 30; // Free delivery with pass or if buying a pass
+    const deliveryCharge = isPassApplicable ? 0 : 25; // Free delivery with pass or if buying a pass
     
     // One item free (the most expensive one) for subscribers
     const freeItemsAvailable = isPassApplicable ? cart.filter(i => !i.isPass) : [];
@@ -55,7 +55,7 @@ const Cart = () => {
     
     const discountApplied = freeItemValue;
     const payableSubtotal = personalTotal - discountApplied;
-    const tax = payableSubtotal * 0.05;
+    const tax = payableSubtotal * 0.02;
     const computedTotal = payableSubtotal + tax + deliveryCharge;
 
     useEffect(() => {
@@ -351,8 +351,20 @@ const Cart = () => {
                                     <span>-₹{discountApplied}</span>
                                 </div>
                             )}
+                            {deliveryCharge > 0 && (
+                                <div className="fee-row">
+                                    <span>Delivery Charge</span>
+                                    <span>₹{deliveryCharge.toFixed(2)}</span>
+                                </div>
+                            )}
+                            {isPassApplicable && (
+                                <div className="fee-row pass-discount" style={{ color: '#10b981' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Zap size={14} /> Free Delivery Applied</div>
+                                    <span>-₹25.00</span>
+                                </div>
+                            )}
                             <div className="fee-row">
-                                <span>Service & Tax (5.0%)</span>
+                                <span>Service & Tax (2.0%)</span>
                                 <span>₹{Number(tax || 0).toFixed(2)}</span>
                             </div>
                             <div className="fee-row total">
