@@ -533,7 +533,7 @@ const MerchantDashboard = () => {
                                             </button>
                                         ) : order.status === 'preparing' || order.status === 'confirmed' ? (
                                             <button onClick={() => ordersAPI.updateStatus(order._id || order.id, 'ready').then(fetchData)} className="btn btn-success" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                                <CheckCircle size={16} /> CONFIRMED
+                                                <CheckCircle size={16} /> FOOD READY
                                             </button>
                                         ) : (
                                             <button disabled className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>

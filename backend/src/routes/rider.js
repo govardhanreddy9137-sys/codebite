@@ -79,10 +79,8 @@ router.post('/:id/claim', verifyToken, isRider, async (req, res) => {
 router.put('/:id/status', verifyToken, isRider, async (req, res) => {
   try {
     const { status } = req.body;
-    if (!['preparing', 'ready', 'delivered'].includes(status)) {
-         // for rider we expect 'delivered' or them marking it as 'picked_up' 
-         // but wait, we use specific statuses... 
-         // let's allow 'delivered' for now.
+    if (!['ready', 'out_for_delivery', 'delivered'].includes(status)) {
+      return res.status(400).json({ error: 'Invalid status for rider' });
     }
     
     const order = await Order.findOneAndUpdate(

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { MapPin, Phone, Package, Bell, BellOff, LogOut, Route, Zap, Store } from 'lucide-react';
+import { MapPin, Phone, Package, Bell, BellOff, LogOut, Route, Zap, Store, CheckCircle } from 'lucide-react';
 import { ridersAPI, ordersAPI } from '../api.js';
 import { useToast } from '../context/ToastContext';
 
@@ -178,6 +178,19 @@ const RaiderDashboard = () => {
         } catch (err) {
             console.error('Failed to mark as delivered:', err);
             const errorMessage = err.response?.data?.error || err.message || 'Failed to mark as delivered';
+            showToast(errorMessage, 'error');
+        }
+    };
+
+    const handleStatusUpdate = async (id, status) => {
+        try {
+            playSuccessSound();
+            await ridersAPI.updateStatus(id, status);
+            showToast(`Status updated!`, 'success');
+            fetchOrders();
+        } catch (err) {
+            console.error('Failed to update status:', err);
+            const errorMessage = err.response?.data?.error || err.message || 'Failed to update status';
             showToast(errorMessage, 'error');
         }
     };
@@ -395,19 +408,37 @@ const RaiderDashboard = () => {
                         <Phone size={16} />
                         {order.customerPhone}
                     </a>
-                    <button onClick={() => handleDelivered(order._id || order.id)} style={{
-                        background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-                        border: 'none',
-                        borderRadius: '12px',
-                        padding: '1rem 2rem',
-                        color: 'white',
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                        width: '100%',
-                        transition: 'all 0.3s ease'
-                    }}>
-                        Delivered
-                    </button>
+                    {order.status === 'out_for_delivery' ? (
+                        <button onClick={() => handleDelivered(order._id || order.id)} style={{
+                            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                            border: 'none',
+                            borderRadius: '12px',
+                            padding: '1rem 2rem',
+                            color: 'white',
+                            fontWeight: 'bold',
+                            cursor: 'pointer',
+                            width: '100%',
+                            transition: 'all 0.3s ease'
+                        }}>
+                            <CheckCircle size={18} style={{ display: 'inline', marginRight: '0.5rem', verticalAlign: 'middle' }} />
+                            Completed / Delivered
+                        </button>
+                    ) : (
+                        <button onClick={() => handleStatusUpdate(order._id || order.id, 'out_for_delivery')} style={{
+                            background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                            border: 'none',
+                            borderRadius: '12px',
+                            padding: '1rem 2rem',
+                            color: 'white',
+                            fontWeight: 'bold',
+                            cursor: 'pointer',
+                            width: '100%',
+                            transition: 'all 0.3s ease'
+                        }}>
+                            <Package size={18} style={{ display: 'inline', marginRight: '0.5rem', verticalAlign: 'middle' }} />
+                            Out For Delivery (Picked Up)
+                        </button>
+                    )}
                 </div>
             ))}
 

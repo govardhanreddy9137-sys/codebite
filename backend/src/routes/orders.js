@@ -115,7 +115,7 @@ router.put('/:id/status', verifyToken, async (req, res) => {
       canModify = true;
     }
     // For riders: allow status updates for delivery
-    if (isRider && ['ready', 'picked_up', 'delivered'].includes(status)) {
+    if (isRider && ['ready', 'out_for_delivery', 'delivered'].includes(status)) {
       canModify = true;
     }
     

@@ -25,9 +25,11 @@ const OrderTracking = () => {
                 const data = await ordersAPI.getById(id);
                 setOrder(data);
                 
-                if (data.status === 'preparing') setStatusStep(0);
-                else if (data.status === 'ready' || data.status === 'picked_up') setStatusStep(1);
-                else if (data.status === 'delivered') setStatusStep(2);
+                if (data.status === 'pending') setStatusStep(-1);
+                else if (data.status === 'preparing' || data.status === 'confirmed') setStatusStep(0);
+                else if (data.status === 'ready') setStatusStep(1);
+                else if (data.status === 'out_for_delivery' || data.status === 'picked_up') setStatusStep(2);
+                else if (data.status === 'delivered') setStatusStep(3);
 
                 if (data.rider?.lat && data.rider?.lng) {
                     setRiderPos([data.rider.lat, data.rider.lng]);
@@ -35,7 +37,7 @@ const OrderTracking = () => {
                     // Simulate movement if no real GPS
                     const startLat = 12.9516, startLng = 77.5746; // Kitchen
                     const endLat = 12.9716, endLng = 77.5946; // Customer
-                    const progress = data.status === 'preparing' ? 0 : data.status === 'picked_up' ? 0.5 : data.status === 'delivered' ? 1.0 : 0.2;
+                    const progress = data.status === 'preparing' ? 0 : data.status === 'ready' ? 0.2 : data.status === 'out_for_delivery' ? 0.6 : data.status === 'delivered' ? 1.0 : 0.1;
                     setRiderPos([
                         startLat + (endLat - startLat) * progress,
                         startLng + (endLng - startLng) * progress
@@ -153,9 +155,13 @@ const OrderTracking = () => {
                         </div>
                         <div className={`step ${statusStep >= 1 ? 'active' : ''}`}>
                             <div className="dot" />
-                            <span>Rider en route</span>
+                            <span>Ready for pickup</span>
                         </div>
                         <div className={`step ${statusStep >= 2 ? 'active' : ''}`}>
+                            <div className="dot" />
+                            <span>Out for delivery</span>
+                        </div>
+                        <div className={`step ${statusStep >= 3 ? 'active' : ''}`}>
                             <div className="dot" />
                             <span>Delivered successfully</span>
                         </div>
