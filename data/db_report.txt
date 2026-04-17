@@ -1,0 +1,214 @@
+Using MONGO_URI: mongodb://localhost:27017/codebite
+Connected to MongoDB
+Collection: users, Count: 2
+First doc in users: {
+  "_id": "69c15c5144a52ed90d363d9e",
+  "name": "Govardhan Reddy",
+  "email": "govardhanreddy9137@gmail.com",
+  "password": "$2a$10$9uS6VWs63q/DcWQzb5k4n.gwbBNZgJ1lBvWcMcpOgbSHi6hP6R0ua",
+  "role": "admin",
+  "phone": "+91 9023865544",
+  "address": {
+    "_id": "69c15c5144a52ed90d363d9f"
+  },
+  "membershipExpiry": null,
+  "orders": [],
+  "wishlist": [],
+  "totalSpent": 0,
+  "loyaltyPoints": 0,
+  "createdAt": "2026-03-23T15:29:21.032Z",
+  "updatedAt": "2026-03-23T15:29:21.032Z",
+  "__v": 0
+}
+Indexes for users: [
+  {
+    "v": 2,
+    "key": {
+      "_id": 1
+    },
+    "name": "_id_"
+  },
+  {
+    "v": 2,
+    "key": {
+      "email": 1
+    },
+    "name": "email_1",
+    "background": true,
+    "unique": true
+  }
+]
+Collection: orders, Count: 1
+First doc in orders: {
+  "_id": "69c2109287080838f8f214d9",
+  "userId": "000000000000000000000002",
+  "items": [
+    {
+      "id": "101",
+      "name": "Idli (4 pcs)",
+      "price": 60,
+      "quantity": 2,
+      "_id": "69c2109287080838f8f214da"
+    }
+  ],
+  "total": 120,
+  "status": "pending",
+  "paymentStatus": "pending",
+  "paymentMethod": null,
+  "deliveryRoom": "Conference Room A",
+  "passApplied": false,
+  "isGift": false,
+  "giftRecipient": "",
+  "__v": 0,
+  "createdAt": "2026-03-24T04:18:26.900Z",
+  "updatedAt": "2026-03-24T04:18:26.900Z"
+}
+Indexes for orders: [
+  {
+    "v": 2,
+    "key": {
+      "_id": 1
+    },
+    "name": "_id_"
+  }
+]
+Collection: foods, Count: 102
+First doc in foods: {
+  "_id": "69b7e0a2ac2d3431919ef025",
+  "id": 101,
+  "name": "Idli (4 pcs)",
+  "price": 60,
+  "description": "Soft idli with chutney & sambar.",
+  "aiDescription": "Cloud-like steamed rice cakes, fermented to perfection. Served with our signature slow-simmered sambar and hand-ground coconut relish.",
+  "image": "/src/images/idli.jpg",
+  "restaurant": "Amma Chetti Vanta",
+  "category": "tiffens",
+  "calories": 0,
+  "protein": 0,
+  "carbs": 0,
+  "createdAt": "2026-03-16T10:51:14.951Z",
+  "updatedAt": "2026-03-16T10:51:14.951Z",
+  "__v": 0
+}
+Indexes for foods: [
+  {
+    "v": 2,
+    "key": {
+      "_id": 1
+    },
+    "name": "_id_"
+  },
+  {
+    "v": 2,
+    "key": {
+      "_fts": "text",
+      "_ftsx": 1
+    },
+    "name": "name_text_description_text_restaurantName_text",
+    "background": true,
+    "weights": {
+      "description": 1,
+      "name": 1,
+      "restaurantName": 1
+    },
+    "default_language": "english",
+    "language_override": "language",
+    "textIndexVersion": 3
+  },
+  {
+    "v": 2,
+    "key": {
+      "category": 1
+    },
+    "name": "category_1",
+    "background": true
+  },
+  {
+    "v": 2,
+    "key": {
+      "restaurant": 1
+    },
+    "name": "restaurant_1",
+    "background": true
+  },
+  {
+    "v": 2,
+    "key": {
+      "price": 1
+    },
+    "name": "price_1",
+    "background": true
+  },
+  {
+    "v": 2,
+    "key": {
+      "rating": -1
+    },
+    "name": "rating_-1",
+    "background": true
+  }
+]
+Collection: restaurants, Count: 13
+First doc in restaurants: {
+  "_id": "69c250295f8472f7e9bc0bbe",
+  "name": "Amma Chetti Vanta",
+  "__v": 0,
+  "createdAt": "2026-03-24T08:49:45.895Z",
+  "cuisine": "South Indian • Home Style",
+  "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop",
+  "isOpen": true,
+  "offer": "Flat 10% off",
+  "opensAt": "9:00 AM",
+  "rating": 4.2,
+  "updatedAt": "2026-03-24T08:49:45.895Z"
+}
+Indexes for restaurants: [
+  {
+    "v": 2,
+    "key": {
+      "_id": 1
+    },
+    "name": "_id_"
+  },
+  {
+    "v": 2,
+    "key": {
+      "_fts": "text",
+      "_ftsx": 1
+    },
+    "name": "name_text_cuisine_text",
+    "background": true,
+    "weights": {
+      "cuisine": 1,
+      "name": 1
+    },
+    "default_language": "english",
+    "language_override": "language",
+    "textIndexVersion": 3
+  },
+  {
+    "v": 2,
+    "key": {
+      "rating": -1
+    },
+    "name": "rating_-1",
+    "background": true
+  },
+  {
+    "v": 2,
+    "key": {
+      "city": 1
+    },
+    "name": "city_1",
+    "background": true
+  },
+  {
+    "v": 2,
+    "key": {
+      "name": 1
+    },
+    "name": "name_1",
+    "background": true,
+    "unique": true
+  }
+]

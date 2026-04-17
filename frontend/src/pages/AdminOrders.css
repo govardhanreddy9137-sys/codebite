@@ -1,0 +1,249 @@
+.bi-header-compact {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2.5rem 3rem;
+    border-radius: 35px;
+    margin-bottom: 3rem;
+}
+
+.bi-meta-controls {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.search-box-bi {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 20px;
+}
+
+.search-box-bi input {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 800;
+    width: 250px;
+    letter-spacing: 1px;
+}
+
+.filter-bar-bi {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.filter-btn-bi {
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-btn-bi.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 10px 20px rgba(255, 48, 8, 0.2);
+}
+
+.orders-grid-bi {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 2rem;
+}
+
+.order-bi-card {
+    padding: 2.5rem;
+    border-radius: 35px;
+    position: relative;
+    overflow: hidden;
+}
+
+.order-bi-side-status {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+}
+
+.order-bi-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.order-id-bi {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.id-label {
+    font-size: 0.6rem;
+    font-weight: 800;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+}
+
+.id-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 950;
+    color: white;
+    letter-spacing: 1px;
+}
+
+.urgent-badge {
+    background: #ef4444;
+    color: white;
+    font-size: 0.6rem;
+    font-weight: 900;
+    padding: 2px 8px;
+    border-radius: 6px;
+    animation: success-pulse 2s infinite;
+}
+
+.order-bi-revenue {
+    font-size: 1.5rem;
+    font-weight: 950;
+    color: var(--primary);
+}
+
+.order-bi-info-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+}
+
+.auth-label {
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.auth-value {
+    font-weight: 700;
+    color: white;
+    font-size: 0.85rem;
+}
+
+.auth-phone {
+    font-family: 'JetBrains Mono', monospace;
+    color: #3b82f6;
+    font-weight: 800;
+}
+
+.order-bi-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.5rem 0 2rem;
+}
+
+.bi-item-tag {
+    background: rgba(255,255,255,0.03);
+    padding: 0.4rem 1rem;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--text-secondary);
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.order-bi-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 64px;
+    gap: 1rem;
+}
+
+.bi-status-select, .bi-rider-select {
+    width: 100%;
+    height: 54px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 15px;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 0 1rem;
+    cursor: pointer;
+}
+
+.bi-status-select {
+    color: #f59e0b;
+}
+
+.bi-status-select.status-delivered {
+    color: #10b981;
+}
+
+.bi-status-select.status-pending {
+    color: #ef4444;
+}
+
+.bi-delete-btn {
+    height: 54px;
+    border-radius: 15px;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    background: rgba(239, 68, 68, 0.05);
+    color: #ef4444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.bi-delete-btn:hover {
+    background: #ef4444;
+    color: white;
+}
+
+.bi-dispatch-status {
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.65rem;
+    font-weight: 900;
+    color: #10b981;
+    letter-spacing: 1px;
+}
+
+.empty-state-bi {
+    grid-column: 1 / -1;
+    padding: 5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media (max-width: 600px) {
+    .bi-header-compact {
+        flex-direction: column;
+        gap: 2rem;
+        text-align: center;
+    }
+    
+    .search-box-bi input {
+        width: 100%;
+    }
+    
+    .order-bi-actions {
+        grid-template-columns: 1fr;
+    }
+}

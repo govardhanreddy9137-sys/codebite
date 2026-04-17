@@ -1,0 +1,70 @@
+.merchant-dashboard-container {
+    background: #f4f4f4;
+    color: #333;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+}
+
+.btn-secondary {
+    background: #333;
+    color: #fff;
+    border-color: #333;
+}
+
+.btn-outline {
+    background: transparent;
+    border-color: #ddd;
+    color: #333;
+}
+
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 2px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.status-badge.pending { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+.status-badge.preparing { background: #cce5ff; color: #004085; border: 1px solid #b8daff; }
+.status-badge.ready { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+
+.form-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+h1, h2, h3 {
+    margin-top: 0;
+    color: #222;
+}
+
+.text-center {
+    text-align: center;
+}

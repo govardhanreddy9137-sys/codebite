@@ -1,0 +1,50 @@
+﻿fterResolve (node:internal/mo
+dules/esm/loader:577:36)
+    at afterResolve (node:int
+ernal/modules/esm/loader:625:
+52)
+    at ModuleLoader.getOrCrea
+teModuleJob (node:internal/mo
+dules/esm/loader:631:12)
+    at onImport.tracePromise.
+__proto__ (node:internal/modu
+les/esm/loader:650:32)
+    at 
+TracingChannel.tracePromise (
+node:diagnostics_channel:350:
+14)
+
+Node.js v24.14.0
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+Γ£à MongoDB connected
+Γ£à Restaurants seeded/updated with Swiggy-style data
+Γ¥î Port 3002 is already in 
+use. Please kill the process 
+or use a different port.
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+Γ£à MongoDB connected
+Γ£à Restaurants seeded/updated with Swiggy-style data
+Γ¥î Port 3002 is already in 
+use. Please kill the process 
+or use a different port.
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+Γ£à MongoDB connected
+Γ£à Restaurants seeded/updated with Swiggy-style data
+Γ¥î Port 3002 is already in 
+use. Please kill the process 
+or use a different port.
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+Γ£à MongoDB connected
+Γ£à Restaurants seeded/updated with Swiggy-style data
+≡ƒÜÇ Backend listening on http://localhost:3002
+Restarting 'src/index.js'
+Γ£à MongoDB connected
+Γ£à Restaurants seeded/updated with Swiggy-style data
+Γ¥î Port 3002 is already in 
+use. Please kill the process 
+or use a different port.
+Failed running 'src/index.js'. Waiting for file changes before restarting...

@@ -1,0 +1,31 @@
+/* Raider Specific Styles */
+.raider-theme {
+    background: #064e3b; /* Deep Emerald for Raider */
+}
+
+.raider-theme .circle-1 {
+    background: #065f46; /* Emerald 800 */
+}
+
+.raider-theme .circle-2 {
+    background: #10b981; /* Emerald 500 */
+}
+
+.raider-theme .logo-icon-wrapper {
+    background: linear-gradient(135deg, #065f46, #10b981);
+    box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+}
+
+.raider-theme .input-field:focus {
+    border-color: #10b981;
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+}
+
+.raider-theme .login-btn {
+    background: linear-gradient(135deg, #059669, #10b981);
+    box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);
+}
+
+.raider-theme .login-btn:hover:not(:disabled) {
+    box-shadow: 0 15px 30px rgba(16, 185, 129, 0.3);
+}

@@ -1,0 +1,85 @@
+.breaking-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.concept-card {
+    background: #fff;
+    border: 3px solid #000;
+    box-shadow: 12px 12px 0px #000;
+    overflow: hidden;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+}
+
+.concept-card::before {
+    content: "BREAKING_CONCEPT";
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #ef4444;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 950;
+    padding: 2px 8px;
+    z-index: 10;
+    letter-spacing: 1px;
+}
+
+.concept-card:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 16px 16px 0px var(--primary);
+}
+
+.concept-image-container {
+    position: relative;
+    height: 250px;
+    border-bottom: 2px solid #000;
+}
+
+.concept-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.vote-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #000;
+    color: #fff;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 900;
+    border: 1px solid #fff;
+}
+
+.concept-info {
+    padding: 1.5rem;
+}
+
+.concept-info h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+}
+
+.concept-info p {
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    margin-bottom: 1.5rem;
+    height: 3em;
+    overflow: hidden;
+}
+
+/* Classic Search Overrides */
+.form-input {
+    border: 2px solid #000 !important;
+    background: #fff !important;
+    color: #000 !important;
+}

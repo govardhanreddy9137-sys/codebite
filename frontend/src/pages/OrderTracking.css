@@ -1,0 +1,296 @@
+.tracking-container {
+    padding-top: 6rem;
+    padding-bottom: 8rem;
+    position: relative;
+    z-index: 10;
+}
+
+.tracking-header-elite {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    padding: 3rem;
+    border-radius: 45px;
+    margin-bottom: 4rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.elite-back-btn {
+    width: 64px;
+    height: 64px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.elite-back-btn:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    box-shadow: 0 10px 20px rgba(255, 48, 8, 0.2);
+}
+
+.header-identity h1 {
+    font-size: 2.5rem;
+    font-weight: 950;
+    letter-spacing: -1px;
+    margin-bottom: 0.25rem;
+}
+
+.telemetry-label {
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 4px;
+    color: var(--primary);
+}
+
+.eta-badge-elite {
+    margin-left: auto;
+    padding: 1rem 2rem;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: 20px;
+    color: #10b981;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 950;
+    letter-spacing: 2px;
+}
+
+.tracking-grid-v3 {
+    display: grid;
+    grid-template-columns: 2.5fr 1fr;
+    gap: 3rem;
+}
+
+.main-radar-module {
+    border-radius: 50px;
+    overflow: hidden;
+    position: relative;
+}
+
+.radar-header-bar {
+    padding: 2rem 3rem;
+    background: rgba(255,255,255,0.02);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.radar-status-dot.active {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 15px #10b981;
+    animation: success-pulse 2s infinite;
+}
+
+.radar-header-bar h3 {
+    font-size: 0.85rem;
+    font-weight: 950;
+    letter-spacing: 2px;
+}
+
+.radar-meta {
+    margin-left: auto;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--text-secondary);
+}
+
+.elite-map-container {
+    height: 550px;
+    width: 100%;
+}
+
+.dispatch-telemetry-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 2.5rem 3.5rem;
+    background: rgba(255,255,255,0.02);
+}
+
+.telemetry-node {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.t-label {
+    font-size: 0.6rem;
+    font-weight: 950;
+    letter-spacing: 2px;
+    color: var(--text-secondary);
+}
+
+.t-value {
+    font-size: 0.9rem;
+    font-weight: 850;
+}
+
+.tracking-sidebar-elite {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.rider-card-elite {
+    padding: 2.5rem;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    position: relative;
+}
+
+.rider-avatar-box {
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    overflow: hidden;
+}
+
+.rider-avatar-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.rider-details h3 {
+    font-size: 1.1rem;
+    font-weight: 950;
+}
+
+.rider-rank-stars {
+    font-size: 0.65rem;
+    font-weight: 850;
+    color: #f59e0b;
+    margin-top: 0.5rem;
+    letter-spacing: 1px;
+}
+
+.elite-call-btn {
+    margin-left: auto;
+    width: 54px;
+    height: 54px;
+    border-radius: 18px;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    color: #10b981;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.elite-call-btn:hover {
+    background: #10b981;
+    color: white;
+}
+
+.order-summary-mini {
+    padding: 2.5rem;
+    border-radius: 40px;
+}
+
+.mini-item-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.mini-item {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.item-qty { color: var(--primary); font-weight: 950; }
+
+.mini-total-bar {
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    justify-content: space-between;
+    font-weight: 850;
+    font-size: 0.9rem;
+}
+
+.status-progress-track {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    padding: 1rem;
+}
+
+.progress-segment {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    opacity: 0.2;
+    transition: all 1s ease;
+}
+
+.progress-segment.active {
+    opacity: 1;
+}
+
+.seg-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: white;
+    position: relative;
+}
+
+.progress-segment.active .seg-dot {
+    background: var(--primary);
+    box-shadow: 0 0 15px var(--primary);
+}
+
+.seg-label {
+    font-size: 0.75rem;
+    font-weight: 950;
+    letter-spacing: 2px;
+}
+
+.tracking-footer-status {
+    margin-top: 5rem;
+    padding: 2rem 4rem;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.02);
+}
+
+.footer-telemetry {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    font-size: 0.65rem;
+    font-weight: 900;
+    color: var(--text-secondary);
+    letter-spacing: 3px;
+}
+
+.vertical-divider-short {
+    width: 1px;
+    height: 15px;
+    background: rgba(255,255,255,0.1);
+}
+
+@media (max-width: 1100px) {
+    .tracking-grid-v3 {
+        grid-template-columns: 1fr;
+    }
+}

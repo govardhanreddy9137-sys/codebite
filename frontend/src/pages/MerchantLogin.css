@@ -1,0 +1,27 @@
+/* Merchant Specific Styles */
+.merchant-theme {
+    background: #2e1065; /* Deep Purple for Merchant */
+}
+
+.merchant-theme .circle-1 {
+    background: #6d28d9; /* Purple 700 */
+}
+
+.merchant-theme .logo-icon-wrapper {
+    background: linear-gradient(135deg, #7c3aed, #fbbf24);
+    box-shadow: 0 10px 20px rgba(124, 58, 237, 0.3);
+}
+
+.merchant-theme .input-field:focus {
+    border-color: #fbbf24;
+    box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.1);
+}
+
+.merchant-theme .login-btn {
+    background: linear-gradient(135deg, #7c3aed, #fbbf24);
+    box-shadow: 0 10px 20px rgba(124, 58, 237, 0.2);
+}
+
+.merchant-theme .login-btn:hover:not(:disabled) {
+    box-shadow: 0 15px 30px rgba(124, 58, 237, 0.3);
+}

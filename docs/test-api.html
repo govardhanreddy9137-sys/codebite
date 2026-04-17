@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>API Test</title>
+</head>
+<body>
+  <h2>API Test (Origin: http://localhost:5173)</h2>
+  <button onclick="testLogin()">Test Login</button>
+  <button onclick="testOrders()">Test Orders</button>
+  <pre id="out"></pre>
+  <script>
+    const API_URL = 'http://localhost:3001/api';
+    async function testLogin() {
+      console.log('Testing login...');
+      try {
+        const res = await fetch(API_URL + '/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: 'test@example.com', password: '123456' })
+        });
+        console.log('Response status:', res.status);
+        const data = await res.json();
+        if (data.ok) {
+          localStorage.setItem('codebite.auth.token', data.token);
+          console.log('Token saved:', data.token);
+        }
+        document.getElementById('out').textContent = JSON.stringify(data, null, 2);
+      } catch (e) {
+        console.error('Login error:', e);
+        document.getElementById('out').textContent = 'Error: ' + e.message;
+      }
+    }
+    async function testOrders() {
+      const token = localStorage.getItem('codebite.auth.token');
+      console.log('Testing orders... token:', !!token);
+      try {
+        const res = await fetch(API_URL + '/orders', {
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token 
+          }
+        });
+        console.log('Orders response status:', res.status);
+        const data = await res.json();
+        document.getElementById('out').textContent = JSON.stringify(data, null, 2);
+      } catch (e) {
+        console.error('Orders error:', e);
+        document.getElementById('out').textContent = 'Error: ' + e.message;
+      }
+    }
+  </script>
+</body>
+</html>

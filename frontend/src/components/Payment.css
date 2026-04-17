@@ -1,0 +1,378 @@
+/* Redesigned Premium Payment System */
+.premium-payment-engine {
+    color: #fff;
+    padding: 1.5rem;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Header Redesign */
+.payment-header-redesign {
+    margin-bottom: 2rem;
+}
+
+.total-payable-box {
+    background: linear-gradient(135deg, #2d1b18 0%, #1a1a1a 100%);
+    border-radius: 40px;
+    padding: 3rem 1.5rem;
+    text-align: center;
+    border: 1px solid rgba(255, 90, 54, 0.15);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.total-payable-box label {
+    display: block;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+}
+
+.amount-hero {
+    font-size: 4rem;
+    font-weight: 950;
+    color: #fff;
+    letter-spacing: -1.5px;
+}
+
+/* Grid V2 Layout */
+.payment-grid-selection-v2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    margin-top: 2rem;
+}
+
+.payment-method-card-v2 {
+    background: #111;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 35px;
+    padding: 2.5rem 2rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.payment-method-card-v2:hover {
+    background: #161616;
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-4px);
+}
+
+.payment-method-card-v2.active {
+    background: #1a1a1a;
+    border-color: #ff5a36;
+    box-shadow: 0 15px 30px rgba(255, 90, 54, 0.1);
+}
+
+.payment-method-card-v2.active::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 2px solid #ff5a36;
+    border-radius: 35px;
+    pointer-events: none;
+}
+
+.payment-method-card-v2.full-width {
+    grid-column: span 2;
+    padding: 2rem;
+}
+
+.card-top {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.payment-method-card-v2.active .card-top {
+    color: #ff5a36;
+}
+
+.card-bottom h4 {
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.5px;
+}
+
+.card-bottom p {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+}
+
+.selected-indicator {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    color: #ff5a36;
+}
+
+/* Form Styles */
+.payment-body {
+    margin-top: 1.5rem;
+}
+
+.p-input {
+    margin-bottom: 1.5rem;
+}
+
+.p-input label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 0.75rem;
+    letter-spacing: 1px;
+}
+
+.p-input input, .p-input select {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 1.25rem;
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.p-input input:focus {
+    border-color: #ff5a36;
+    background: rgba(255, 255, 255, 0.08);
+    outline: none;
+}
+
+/* Specific Section Styles */
+.phonepe-qr-card {
+    background: #000;
+    border-radius: 30px;
+    padding: 3rem 2rem;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+.qr-frame-premium {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 20px;
+    display: inline-block;
+    margin: 2rem 0;
+}
+
+.qr-main-img {
+    width: 250px;
+    height: 250px;
+}
+
+.btn-pay-app {
+    background: #5f259f;
+    color: #fff;
+    text-decoration: none;
+    padding: 1.25rem;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    font-weight: 800;
+    margin-top: 2rem;
+}
+
+/* Footer Actions */
+.payment-footer {
+    padding: 2.5rem 0;
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-cancel {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 1.5rem;
+    border-radius: 24px;
+    flex: 1;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.btn-pay-premium {
+    background: linear-gradient(135deg, #ff5a36 0%, #ff3008 100%);
+    color: #fff;
+    border: none;
+    padding: 1.5rem;
+    border-radius: 24px;
+    flex: 2;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(255, 90, 54, 0.3);
+}
+
+.error-toast {
+    background: #ef4444;
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-weight: 800;
+}
+
+/* Interactive Card Preview */
+.interactive-card {
+    background: linear-gradient(135deg, #333 0%, #111 100%);
+    border-radius: 25px;
+    height: 220px;
+    padding: 2.5rem;
+    margin-bottom: 3rem;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* PhonePe Dedicated View */
+.phonepe-dedicated-view {
+    margin-top: 2rem;
+    animation: slideUp 0.3s ease-out;
+}
+
+.phonepe-qr-card-premium {
+    background: #000;
+    border-radius: 25px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.qr-container-premium {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 20px;
+    display: inline-block;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.qr-logo-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 5px;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.upi-id-copy-badge {
+    margin-top: 1rem;
+    background: rgba(255,255,255,0.03);
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Success Animations */
+.payment-success-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.95);
+    backdrop-filter: blur(20px);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.success-card {
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    padding: 4rem 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.success-icon-wrapper {
+    margin-bottom: 2rem;
+    animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.success-amount {
+    color: #10b981;
+    font-size: 1.5rem;
+    font-weight: 900;
+}
+
+.order-summary-mini {
+    background: rgba(255,255,255,0.03);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 2rem 0;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.6);
+}
+
+.redirect-timer {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1px;
+    margin-top: 2rem;
+}
+
+/* Confetti Effect */
+.confetti-container {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #ff5a36;
+    top: -10px;
+    animation: confetti-fall 3s linear infinite;
+}
+
+@keyframes confetti-fall {
+    to {
+        transform: translateY(600px) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0); opacity: 0; }
+    60% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

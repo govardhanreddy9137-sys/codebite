@@ -1,0 +1,348 @@
+{
+  "restaurants": [
+    {
+      "name": "Burger Lab",
+      "image": "/images/burger-lab.jpg"
+    },
+    {
+      "name": "Pizza Republic",
+      "image": "/images/pizza-republic.jpg"
+    },
+    {
+      "name": "Biryani House",
+      "image": "/images/biryani-house.jpg"
+    },
+    {
+      "name": "Green Kitchen",
+      "image": "/images/green-kitchen.jpg"
+    },
+    {
+      "name": "Sweet Spot",
+      "image": "/images/sweet-spot.jpg"
+    },
+    {
+      "name": "Juice Junction",
+      "image": "/images/juice-junction.jpg"
+    },
+    {
+      "name": "Amma Chetti Vanta",
+      "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      "name": "Andhra Meals",
+      "image": "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      "name": "Kalpana House",
+      "image": "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      "name": "Biryani Paradise",
+      "image": "https://images.unsplash.com/photo-1563379078-d8d938064ad4?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      "name": "Taste of Punjab",
+      "image": "https://images.unsplash.com/photo-1546833999-b9f581a1996d?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      "name": "Home Made Food",
+      "image": "https://images.unsplash.com/photo-1547928576-a4a33237ece3?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      "name": "Hotel Taj Palace",
+      "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      "name": "Paradise Hotel",
+      "image": "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      "name": "Hotel Swagath",
+      "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      "name": "Biryani Zone",
+      "image": "https://images.unsplash.com/photo-1563379091339-03b21bc4a4f8?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      "name": "Srikanya",
+      "image": "https://images.unsplash.com/photo-1631452180519-c014fe946bc0?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      "name": "Mehfil",
+      "image": "https://images.unsplash.com/photo-1514326640560-7d063ef2aed5?q=80&w=800&auto=format&fit=crop"
+    }
+  ],
+  "foods": [
+    {
+      "name": "Idli (4 pcs)",
+      "restaurant": "Amma Chetti Vanta",
+      "image": "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWFzYWxhJTIwZG9zYXxlbnwwfHwwfHx8MA%3D%3D"
+    },
+    {
+      "name": "Masala Dosa",
+      "restaurant": "Amma Chetti Vanta",
+      "image": "src/images/OIP.webp"
+    },
+    {
+      "name": "Tomato Pappu + Rice",
+      "restaurant": "Amma Chetti Vanta",
+      "image": "src/images/tomato pappu.jpg"
+    },
+    {
+      "name": "Chicken Curry + Rice",
+      "restaurant": "Amma Chetti Vanta",
+      "image": "src/images/Chicken Curry + Rice.webp"
+    },
+    {
+      "name": "Veg Meals",
+      "restaurant": "Andhra Meals",
+      "image": "https://images.unsplash.com/photo-1585238342024-78d387f4a707?w=800&auto=format&fit=crop&q=80"
+    },
+    {
+      "name": "Chicken Fry Piece Biryani",
+      "restaurant": "Andhra Meals",
+      "image": "https://images.unsplash.com/photo-1563379091339-03b21bc4a4f8?w=800&auto=format&fit=crop&q=80"
+    },
+    {
+      "name": "Dal Fry + Rice",
+      "restaurant": "Home Made Food",
+      "image": "https://images.unsplash.com/photo-1601050690131-2c951f2d1c56?w=800&auto=format&fit=crop&q=80"
+    },
+    {
+      "name": "Aloo Curry + Chapati",
+      "restaurant": "Home Made Food",
+      "image": "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80"
+    },
+    {
+      "name": "Upma",
+      "restaurant": "Home Made Food",
+      "image": "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80"
+    },
+    {
+      "name": "Egg Curry + Rice",
+      "restaurant": "Home Made Food",
+      "image": "https://images.unsplash.com/photo-1604909052838-1d0e2d0a73a8?w=800&auto=format&fit=crop&q=80"
+    },
+    {
+      "name": "Punugulu",
+      "restaurant": "Kalpana House",
+      "image": "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80"
+    },
+    {
+      "name": "Paneer Butter Masala",
+      "restaurant": "Kalpana House",
+      "image": "https://images.unsplash.com/photo-1631452180519-c014fe946bc0?w=800&auto=format&fit=crop&q=80"
+    },
+    {
+      "name": "Curd Rice",
+      "restaurant": "Kalpana House",
+      "image": "https://images.unsplash.com/photo-1585238342024-78d387f4a707?w=800&auto=format&fit=crop&q=80"
+    },
+    {
+      "name": "Chicken 65",
+      "restaurant": "Kalpana House",
+      "image": "https://images.unsplash.com/photo-1610057099443-fde8c4d50f91?w=800&auto=format&fit=crop&q=80"
+    },
+    {
+      "name": "Vada (2 pcs)",
+      "restaurant": "Ammama Garri Illu",
+      "image": "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80"
+    },
+    {
+      "name": "Pulihora",
+      "restaurant": "Ammama Garri Illu",
+      "image": "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80"
+    },
+    {
+      "name": "Chicken Pulusu",
+      "restaurant": "Ammama Garri Illu",
+      "image": "/images/chicken-pulusu.jpg"
+    },
+    {
+      "name": "Hyderabadi Dum Biryani",
+      "restaurant": "Biryani Paradise",
+      "image": "/images/hyderabadi-biryani.jpg"
+    },
+    {
+      "name": "Chicken 65 Biryani",
+      "restaurant": "Biryani Paradise",
+      "image": "/images/chicken65-biryani.jpg"
+    },
+    {
+      "name": "Veg Dum Biryani",
+      "restaurant": "Biryani Paradise",
+      "image": "/images/veg-biryani.jpg"
+    },
+    {
+      "name": "Mutton Biryani",
+      "restaurant": "Biryani Paradise",
+      "image": "/images/mutton-biryani.jpg"
+    },
+    {
+      "name": "Butter Chicken",
+      "restaurant": "Taste of Punjab",
+      "image": "/images/butter-chicken.jpg"
+    },
+    {
+      "name": "Paneer Butter Masala",
+      "restaurant": "Taste of Punjab",
+      "image": "/images/paneer-butter-masala.jpg"
+    },
+    {
+      "name": "Dal Makhani",
+      "restaurant": "Taste of Punjab",
+      "image": "/images/dal-makhani.jpg"
+    },
+    {
+      "name": "Aloo Gobi",
+      "restaurant": "Taste of Punjab",
+      "image": "/images/aloo-gobi.jpg"
+    },
+    {
+      "name": "Chicken Tikka Masala",
+      "restaurant": "Taste of Punjab",
+      "image": "/images/chicken-tikka-masala.jpg"
+    },
+    {
+      "name": "Prawns Biryani",
+      "restaurant": "Hotel Taj Palace",
+      "image": "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=800"
+    },
+    {
+      "name": "Fish Fry",
+      "restaurant": "Hotel Taj Palace",
+      "image": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=800"
+    },
+    {
+      "name": "Special Chicken Biryani",
+      "restaurant": "Paradise Hotel",
+      "image": "https://images.unsplash.com/photo-1563379091339-03b21bc4a4f8?w=800"
+    },
+    {
+      "name": "Mysore Bajji",
+      "restaurant": "Hotel Swagath",
+      "image": "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800"
+    },
+    {
+      "name": "Mutton Fry Piece Biryani",
+      "restaurant": "Biryani Zone",
+      "image": "https://images.unsplash.com/photo-1544025162-d76694265947?w=800"
+    },
+    {
+      "name": "Chicken 65",
+      "restaurant": "Biryani Zone",
+      "image": "https://images.unsplash.com/photo-1610057099431-d73a1c9d2f2f?w=800"
+    },
+    {
+      "name": "Andhra Chicken Curry",
+      "restaurant": "Srikanya",
+      "image": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=800"
+    },
+    {
+      "name": "Gutthi Vankaya",
+      "restaurant": "Srikanya",
+      "image": "https://images.unsplash.com/photo-1626777553732-4829395f197b?w=800"
+    },
+    {
+      "name": "Special Mutton Biryani",
+      "restaurant": "Mehfil",
+      "image": "https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=1000"
+    },
+    {
+      "name": "Tandoori Platter",
+      "restaurant": "Mehfil",
+      "image": "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=800"
+    },
+    {
+      "name": "Mirchi Bajji",
+      "restaurant": "Kalpana House",
+      "image": "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800"
+    },
+    {
+      "name": "Dal Tadka + Rice",
+      "restaurant": "Kalpana House",
+      "image": "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800"
+    },
+    {
+      "name": "Gongura Mutton + Rice",
+      "restaurant": "Amma Chetti Vanta",
+      "image": "https://images.unsplash.com/photo-1544025162-d76694265947?w=800"
+    },
+    {
+      "name": "Sambar Rice",
+      "restaurant": "Amma Chetti Vanta",
+      "image": "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=800"
+    },
+    {
+      "name": "Chicken Fry",
+      "restaurant": "Andhra Meals",
+      "image": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=800"
+    },
+    {
+      "name": "Prawns Iguru",
+      "restaurant": "Andhra Meals",
+      "image": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=800"
+    },
+    {
+      "name": "Mixed Veg Curry + Chapati",
+      "restaurant": "Home Made Food",
+      "image": "https://images.unsplash.com/photo-1626777553732-4829395f197b?w=800"
+    },
+    {
+      "name": "Egg Biryani",
+      "restaurant": "Home Made Food",
+      "image": "https://images.unsplash.com/photo-1563379091339-03b21bc4a4f8?w=800"
+    },
+    {
+      "name": "Mutton Rogan Josh",
+      "restaurant": "Hotel Taj Palace",
+      "image": "https://images.unsplash.com/photo-1545247181-516773cae74d?w=800"
+    },
+    {
+      "name": "Garlic Naan (2 pcs)",
+      "restaurant": "Hotel Taj Palace",
+      "image": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=800"
+    },
+    {
+      "name": "Paradise Chicken 65",
+      "restaurant": "Paradise Hotel",
+      "image": "https://images.unsplash.com/photo-1610057099431-d73a1c9d2f2f?w=800"
+    },
+    {
+      "name": "Veg Dum Biryani",
+      "restaurant": "Paradise Hotel",
+      "image": "https://images.unsplash.com/photo-1563379091339-03b21bc4a4f8?w=800"
+    },
+    {
+      "name": "Set Dosa (3 pcs)",
+      "restaurant": "Hotel Swagath",
+      "image": "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=600"
+    },
+    {
+      "name": "Puri Sabji (3 pcs)",
+      "restaurant": "Hotel Swagath",
+      "image": "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800"
+    },
+    {
+      "name": "Natu Kodi Pulusu",
+      "restaurant": "Srikanya",
+      "image": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=800"
+    },
+    {
+      "name": "Palakura Pappu",
+      "restaurant": "Srikanya",
+      "image": "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800"
+    },
+    {
+      "name": "Mutton Keema",
+      "restaurant": "Mehfil",
+      "image": "https://images.unsplash.com/photo-1544025162-d76694265947?w=1000"
+    },
+    {
+      "name": "Chicken Malai Tikka",
+      "restaurant": "Mehfil",
+      "image": "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=800"
+    }
+  ]
+}
