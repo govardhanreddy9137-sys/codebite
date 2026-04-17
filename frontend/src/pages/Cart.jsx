@@ -119,19 +119,19 @@ const Cart = () => {
 
     return (
         <div className="container" style={{ padding: '40px 0' }}>
-            <div className="cart-header-premium glass-premium" style={{ marginBottom: '3rem', padding: '3rem', borderRadius: '40px' }}>
+            <div className="cart-header-premium glass-premium">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '1rem' }}>
                     <div className="logo-pulse">
                         <ShoppingBag size={48} color="var(--primary)" />
                     </div>
                     <div>
-                        <h1 style={{ margin: 0, fontSize: '2.5rem', fontWeight: 950, letterSpacing: '-1.5px' }}>YOUR SELECTION_</h1>
-                        <p style={{ margin: 0, opacity: 0.6, fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '2px' }}>V2.1 PRE-PRODUCTION CHECKOUT</p>
+                        <h1 className="cart-title">YOUR SELECTION_</h1>
+                        <p className="cart-subtitle">V2.1 PRE-PRODUCTION CHECKOUT</p>
                     </div>
                 </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1.4fr', gap: '3rem' }}>
+            <div className="cart-layout">
                 {/* Left Side: Items */}
                 <div className="items-column">
                     <div className="glass" style={{ borderRadius: '32px', overflow: 'hidden', padding: '2rem' }}>

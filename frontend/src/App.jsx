@@ -53,10 +53,12 @@ const App = () => {
 
     if (isLoading) {
         return (
-            <div className="loading-screen" style={{ background: '#fff', color: '#000', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+            <div className="loading-screen" style={{ background: 'var(--bg-dark)', color: '#fff', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column', gap: '1rem' }}>
                 <div style={{ textAlign: 'center' }}>
-                    <Utensils size={40} className="spin" />
-                    <p style={{ fontWeight: 'bold', marginTop: '10px' }}>CODEBITE LOADING...</p>
+                    <div className="logo-pulse" style={{ marginBottom: '20px' }}>
+                        <Utensils size={60} color="var(--primary)" />
+                    </div>
+                    <p style={{ fontWeight: 'bold', letterSpacing: '2px', opacity: 0.8 }}>CODEBITE LOADING...</p>
                 </div>
             </div>
         );

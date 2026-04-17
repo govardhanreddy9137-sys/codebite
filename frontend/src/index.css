@@ -162,3 +162,13 @@ h1, h2, h3, h4 {
 
 /* Hide Unnecessary */
 .flash-topbar, .back-to-top { display: none !important; }
+
+/* Mobile Responsive Baseline */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    body {
+        font-size: 14px;
+    }
+}
