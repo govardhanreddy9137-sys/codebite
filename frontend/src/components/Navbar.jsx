@@ -34,139 +34,108 @@ const Navbar = () => {
     const cartItemsCount = Array.isArray(cart) ? cart.reduce((sum, item) => sum + (item?.quantity || 1), 0) : 0;
 
     return (
-        <>
-            <nav className="navbar glass">
-                <div className="navbar-container container">
-                    <Link to="/" className="navbar-logo">
-                        <div className="logo-accent"></div>
-                        <span>Code<span className="logo-highlight">Bite</span></span>
-                    </Link>
+        <nav className="navbar glass">
+            <div className="navbar-container container">
+                <Link to="/" className="navbar-logo">
+                    <div className="logo-accent"></div>
+                    <span>Code<span className="logo-highlight">Bite</span></span>
+                </Link>
 
-                    <div className="navbar-links">
-                        {user ? (
-                            <>
-                                {user.role === 'admin' ? (
-                                    <>
-                                        <Link to="/admin" className="nav-link">
-                                            <LayoutDashboard size={20} />
-                                            Dashboard
-                                        </Link>
-                                        <a href="/" target="_blank" rel="noopener noreferrer" className="nav-link" style={{ color: 'var(--primary-color)', fontWeight: 'bold' }}>
-                                            <Zap size={18} /> View Live Site
-                                        </a>
-                                        <Link to="/admin/food" className="nav-link">Menu Manager</Link>
-                                        <Link to="/admin/orders" className="nav-link">
-                                            Orders
-                                            {Array.isArray(orders) && orders.filter(o => o?.status === 'pending').length > 0 && (
-                                                <span className="cart-badge admin-badge">
-                                                    {orders.filter(o => o?.status === 'pending').length}
-                                                </span>
-                                            )}
-                                        </Link>
-                                    </>
-                                ) : user.role === 'merchant' ? (
-                                    <>
-                                        <Link to="/merchant/dashboard" className="nav-link">
-                                            <LayoutDashboard size={20} />
-                                            Store
-                                        </Link>
-                                    </>
-                                ) : user.role === 'rider' ? (
-                                    <>
-                                        <Link to="/rider/dashboard" className="nav-link">
-                                            <Navigation size={20} />
-                                            Rider Portal
-                                        </Link>
-                                    </>
-                                ) : (
-                                    <>
-                                        <Link to="/menu" className="nav-link">
-                                            <MenuIcon size={20} />
-                                            Home
-                                        </Link>
-                                        <Link to="/passes" className="nav-link" style={{ color: '#f59e0b', fontWeight: 'bold' }}>
-                                            <Crown size={20} />
-                                            Passes
-                                        </Link>
-                                        <Link to="/orders" className="nav-link">
-                                            <History size={20} />
-                                            Orders
-                                        </Link>
-                                        <Link to="/wishlist" className="nav-link nav-link-wishlist">
-                                            <Heart size={20} />
-                                            Wishlist
-                                            {Array.isArray(wishlist) && wishlist.length > 0 && (
-                                                <span className="cart-badge badge-wishlist">{wishlist.length}</span>
-                                            )}
-                                        </Link>
-                                        <Link to="/vote" className="nav-link nav-link-voting">
-                                            <ThumbsUp size={20} />
-                                            Votes
-                                            {Array.isArray(polls) && (
-                                                <span className="cart-badge badge-voting">{polls.length}</span>
-                                            )}
-                                        </Link>
-                                        <Link to="/cart" className="nav-link cart-link">
-                                            <ShoppingCart size={20} />
-                                            Cart
-                                            {cartItemsCount > 0 && (
-                                                <span className="cart-badge">{cartItemsCount}</span>
-                                            )}
-                                        </Link>
-                                    </>
-                                )}
-                                <div className="user-profile-premium">
-                                    <Link to="/wishlist" className="profile-wishlist-shortcut" title="My Wishlist">
-                                        <Heart size={18} />
-                                        {wishlist.length > 0 && <span className="mini-badge">{wishlist.length}</span>}
+                <div className="navbar-links">
+                    {user ? (
+                        <>
+                            {user.role === 'admin' ? (
+                                <>
+                                    <Link to="/admin" className="nav-link">
+                                        <LayoutDashboard size={20} />
+                                        Dashboard
                                     </Link>
-                                    <div className="user-details-box">
-                                        <span className="user-name-premium">{user?.name?.split(' ')[0]}</span>
-                                        <span className="user-role-premium">{user?.role}</span>
-                                    </div>
-                                    <button onClick={handleLogout} className="logout-icon-btn" title="Sign Out">
-                                        <LogOut size={20} />
-                                    </button>
+                                    <a href="/" target="_blank" rel="noopener noreferrer" className="nav-link" style={{ color: 'var(--primary-color)', fontWeight: 'bold' }}>
+                                        <Zap size={18} /> View Live Site
+                                    </a>
+                                    <Link to="/admin/food" className="nav-link">Menu Manager</Link>
+                                    <Link to="/admin/orders" className="nav-link">
+                                        Orders
+                                        {Array.isArray(orders) && orders.filter(o => o?.status === 'pending').length > 0 && (
+                                            <span className="cart-badge admin-badge">
+                                                {orders.filter(o => o?.status === 'pending').length}
+                                            </span>
+                                        )}
+                                    </Link>
+                                </>
+                            ) : user.role === 'merchant' ? (
+                                <>
+                                    <Link to="/merchant/dashboard" className="nav-link">
+                                        <LayoutDashboard size={20} />
+                                        Store
+                                    </Link>
+                                </>
+                            ) : user.role === 'rider' ? (
+                                <>
+                                    <Link to="/rider/dashboard" className="nav-link">
+                                        <Navigation size={20} />
+                                        Rider Portal
+                                    </Link>
+                                </>
+                            ) : (
+                                <>
+                                    <Link to="/menu" className="nav-link">
+                                        <MenuIcon size={20} />
+                                        Menu
+                                    </Link>
+                                    <Link to="/passes" className="nav-link" style={{ color: '#f59e0b', fontWeight: 'bold' }}>
+                                        <Crown size={20} />
+                                        Passes
+                                    </Link>
+                                    <Link to="/orders" className="nav-link">
+                                        <History size={20} />
+                                        Orders
+                                    </Link>
+                                    <Link to="/wishlist" className="nav-link nav-link-wishlist">
+                                        <Heart size={20} />
+                                        Wishlist
+                                        {Array.isArray(wishlist) && wishlist.length > 0 && (
+                                            <span className="cart-badge badge-wishlist">{wishlist.length}</span>
+                                        )}
+                                    </Link>
+                                    <Link to="/vote" className="nav-link nav-link-voting">
+                                        <ThumbsUp size={20} />
+                                        Votes
+                                        {Array.isArray(polls) && (
+                                            <span className="cart-badge badge-voting">{polls.length}</span>
+                                        )}
+                                    </Link>
+                                    <Link to="/cart" className="nav-link cart-link">
+                                        <ShoppingCart size={20} />
+                                        Cart
+                                        {cartItemsCount > 0 && (
+                                            <span className="cart-badge">{cartItemsCount}</span>
+                                        )}
+                                    </Link>
+                                </>
+                            )}
+                            <div className="user-profile-premium">
+                                <Link to="/wishlist" className="profile-wishlist-shortcut" title="My Wishlist">
+                                    <Heart size={18} />
+                                    {wishlist.length > 0 && <span className="mini-badge">{wishlist.length}</span>}
+                                </Link>
+                                <div className="user-details-box">
+                                    <span className="user-name-premium">{user?.name?.split(' ')[0]}</span>
+                                    <span className="user-role-premium">{user?.role}</span>
                                 </div>
-                            </>
-                        ) : (
-                            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                                <Link to="/login" className="btn btn-primary">Login</Link>
+                                <button onClick={handleLogout} className="logout-icon-btn" title="Sign Out">
+                                    <LogOut size={20} />
+                                </button>
                             </div>
-                        )}
-                    </div>
-                </div>
-            </nav>
-
-            {/* Mobile Bottom Navigation */}
-            {user && user.role !== 'admin' && user.role !== 'merchant' && user.role !== 'rider' && (
-                <div className="mobile-bottom-nav">
-                    <Link to="/menu" className={`mobile-nav-item ${location.pathname === '/menu' ? 'active' : ''}`}>
-                        <MenuIcon size={24} />
-                        <span>Menu</span>
-                    </Link>
-                    <Link to="/wishlist" className={`mobile-nav-item ${location.pathname === '/wishlist' ? 'active' : ''}`}>
-                        <Heart size={24} />
-                        <span>Wishlist</span>
-                    </Link>
-                    <Link to="/cart" className={`mobile-nav-item ${location.pathname === '/cart' ? 'active' : ''}`}>
-                        <div className="mobile-cart-icon">
-                            <ShoppingCart size={24} />
-                            {cartItemsCount > 0 && <span className="mobile-badge">{cartItemsCount}</span>}
+                        </>
+                    ) : (
+                        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                            <Link to="/login" className="btn btn-primary">Login</Link>
                         </div>
-                        <span>Cart</span>
-                    </Link>
-                    <Link to="/orders" className={`mobile-nav-item ${location.pathname === '/orders' ? 'active' : ''}`}>
-                        <History size={24} />
-                        <span>Orders</span>
-                    </Link>
-                    <button onClick={handleLogout} className="mobile-nav-item">
-                        <LogOut size={24} />
-                        <span>Exit</span>
-                    </button>
+                    )}
                 </div>
-            )}
-        </>
+            </div>
+        </nav>
     );
 };
 

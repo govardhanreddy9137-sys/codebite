@@ -7,6 +7,7 @@
   --primary: #FF3008;
   --primary-gradient: linear-gradient(135deg, #FF3008 0%, #FF8A00 100%);
   --primary-dark: #E02807;
+  --primary-glow: rgba(255, 48, 8, 0.3);
   --secondary: #475569;
   
   --text-primary: #ffffff;
@@ -160,15 +161,26 @@ h1, h2, h3, h4 {
   animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Response Utilities */
+.desktop-only { display: block !important; }
+.mobile-only { display: none !important; }
+
+@media (max-width: 768px) {
+  .desktop-only { display: none !important; }
+  .mobile-only { display: block !important; }
+  
+  .container {
+    padding: 1rem 1.25rem;
+  }
+  
+  h1 { font-size: 2.2rem !important; }
+  h2 { font-size: 1.8rem !important; }
+  h3 { font-size: 1.4rem !important; }
+  
+  body {
+    padding-bottom: 80px; /* Space for MobileNav */
+  }
+}
+
 /* Hide Unnecessary */
 .flash-topbar, .back-to-top { display: none !important; }
-
-/* Mobile Responsive Baseline */
-@media (max-width: 768px) {
-    .container {
-        padding: 1rem;
-    }
-    body {
-        font-size: 14px;
-    }
-}

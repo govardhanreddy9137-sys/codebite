@@ -7,6 +7,7 @@ import { Loader2, Utensils, Sparkles, Clock } from 'lucide-react';
 
 // Layout
 import Navbar from './components/Navbar';
+import MobileNav from './components/MobileNav';
 import Login from './pages/Login';
 import Menu from './pages/Menu';
 import Cart from './pages/Cart';
@@ -15,7 +16,6 @@ import OrderTracking from './pages/OrderTracking';
 import Subscriptions from './pages/Subscriptions';
 import Wishlist from './pages/Wishlist';
 import AdminDashboard from './pages/AdminDashboard';
-import AdminDashboardNew from './pages/AdminDashboardNew';
 import AdminFood from './pages/AdminFood';
 import AdminOrders from './pages/AdminOrders';
 import AdminUsers from './pages/AdminUsers';
@@ -29,8 +29,6 @@ import WhatsAppButton from './components/WhatsAppButton';
 import ErrorBoundary from './components/ErrorBoundary';
 import FreeRewardBanner from './components/FreeRewardBanner';
 import OrderSuccess from './pages/OrderSuccess';
-import HighestVotedItems from './components/HighestVotedItems';
-import LoginTest from './components/LoginTest';
 import MerchantDashboard from './pages/MerchantDashboard';
 import RaiderDashboard from './pages/RaiderDashboard';
 import AdminLogin from './pages/AdminLogin';
@@ -53,12 +51,10 @@ const App = () => {
 
     if (isLoading) {
         return (
-            <div className="loading-screen" style={{ background: 'var(--bg-dark)', color: '#fff', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column', gap: '1rem' }}>
+            <div className="loading-screen" style={{ background: '#fff', color: '#000', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
                 <div style={{ textAlign: 'center' }}>
-                    <div className="logo-pulse" style={{ marginBottom: '20px' }}>
-                        <Utensils size={60} color="var(--primary)" />
-                    </div>
-                    <p style={{ fontWeight: 'bold', letterSpacing: '2px', opacity: 0.8 }}>CODEBITE LOADING...</p>
+                    <Utensils size={40} className="spin" />
+                    <p style={{ fontWeight: 'bold', marginTop: '10px' }}>CODEBITE LOADING...</p>
                 </div>
             </div>
         );
@@ -140,6 +136,7 @@ const App = () => {
                 <FreeRewardBanner />
                 {user && <ChatBox />}
                 <WhatsAppButton />
+                {user && user.role === 'customer' && <MobileNav />}
             </div>
         </ErrorBoundary>
     );

@@ -69,9 +69,9 @@ const OrderHistory = () => {
 
     return (
         <div className="container" style={{ padding: '40px 0' }}>
-            <div className="orders-header glass-premium">
-                <h1 className="orders-title">Transaction Archive</h1>
-                <p className="orders-subtitle">Premium tracking for your gourmet workspace experiences.</p>
+            <div className="orders-header glass-premium" style={{ marginBottom: '3rem', padding: '3rem', textAlign: 'center' }}>
+                <h1 style={{ fontSize: '3rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-2px', color: 'var(--primary)' }}>Transaction Archive</h1>
+                <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)' }}>Premium tracking for your gourmet workspace experiences.</p>
             </div>
 
             <div className="orders-list" style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
