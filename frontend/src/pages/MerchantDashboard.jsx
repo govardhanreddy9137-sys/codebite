@@ -353,7 +353,7 @@ const MerchantDashboard = () => {
                                             Order #{(order._id || order.id || '').toString().slice(-6).toUpperCase()}
                                         </div>
                                         <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                                            {order.restaurant || order.restaurantName || 'Restaurant'} → {order.deliveryAddress || order.address}
+                                            {(order.items && order.items[0]?.restaurant) || order.restaurant || order.restaurantName || 'Restaurant'} → {order.deliveryAddress || order.address}
                                         </div>
                                         <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
                                             ₹{order.total?.toFixed(2)} • {new Date(order.deliveredAt || order.updatedAt).toLocaleString()}
@@ -377,205 +377,141 @@ const MerchantDashboard = () => {
                 </motion.div>
             )}
 
-            <motion.div 
-                className="stats-grid"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                style={{ 
-                    display: 'grid', 
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
-                    gap: '1.5rem', 
-                    marginBottom: '2rem' 
-                }}
-            >
-                <motion.div 
-                    className="stat-card glass-premium"
-                    whileHover={{ scale: 1.02, y: -5 }}
-                    style={{ 
-                        padding: '2rem',
-                        borderRadius: '20px',
-                        background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%)',
-                        border: '2px solid rgba(239, 68, 68, 0.2)',
-                        textAlign: 'center',
-                        position: 'relative',
-                        overflow: 'hidden'
-                    }}
-                >
-                    <div style={{ position: 'absolute', top: '1rem', right: '1rem', opacity: 0.3 }}>
-                        <Flame size={24} />
+                    <div className="stats-grid">
+                        {[
+                            { label: 'Active Queue', value: orders.length, color: '#ef4444', icon: <Flame size={24}/>, desc: orders.length > 0 ? 'Orders Pending' : 'Kitchen Clear' },
+                            { label: 'Revenue Today', value: `₹${allOrdersData.filter(o => o.status !== 'cancelled').reduce((s, o) => s + (o.total || 0), 0)}`, color: '#10b981', icon: <Trophy size={24}/>, desc: 'Total Sales' },
+                            { label: 'Menu Items', value: foods.length, color: '#3b82f6', icon: <Store size={24}/>, desc: 'Available Items' },
+                            { label: 'Delivered', value: completedOrdersList.length, color: '#8b5cf6', icon: <Target size={24}/>, desc: 'Completed Today' }
+                        ].map((stat, idx) => (
+                            <motion.div 
+                                key={idx}
+                                className="card stat-card-premium"
+                                whileHover={{ scale: 1.05, y: -5 }}
+                                style={{ textAlign: 'center', position: 'relative', overflow: 'hidden' }}
+                            >
+                                <div style={{ color: stat.color, opacity: 0.2, position: 'absolute', top: '1rem', right: '1rem' }}>{stat.icon}</div>
+                                <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.5rem' }}>{stat.label}</div>
+                                <div style={{ fontSize: '2.5rem', fontWeight: 800, color: stat.color }}>{stat.value}</div>
+                                <div style={{ fontSize: '0.8rem', fontWeight: 600, color: stat.color, marginTop: '0.5rem' }}>{stat.desc}</div>
+                            </motion.div>
+                        ))}
                     </div>
-                    <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>Active Queue</div>
-                    <motion.div 
-                        style={{ fontSize: '3rem', fontWeight: 'bold', color: orders.length > 0 ? '#ef4444' : '#6b7280', margin: '0.5rem 0' }}
-                        animate={{ scale: orders.length > 0 ? [1, 1.1, 1] : 1 }}
-                        transition={{ duration: 0.5, repeat: orders.length > 0 ? Infinity : 0, repeatDelay: 2 }}
-                    >
-                        {orders.length}
-                    </motion.div>
-                    <div style={{ fontSize: '0.85rem', color: '#ef4444', fontWeight: 600 }}>
-                        {orders.length > 0 ? 'Orders Pending' : 'Kitchen Clear'}
-                    </div>
-                </motion.div>
 
-                <motion.div 
-                    className="stat-card glass-premium"
-                    whileHover={{ scale: 1.02, y: -5 }}
-                    style={{ 
-                        padding: '2rem',
-                        borderRadius: '20px',
-                        background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%)',
-                        border: '2px solid rgba(16, 185, 129, 0.2)',
-                        textAlign: 'center',
-                        position: 'relative',
-                        overflow: 'hidden'
-                    }}
-                >
-                    <div style={{ position: 'absolute', top: '1rem', right: '1rem', opacity: 0.3 }}>
-                        <Trophy size={24} />
-                    </div>
-                    <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>Revenue Today</div>
-                    <div style={{ fontSize: '3rem', fontWeight: 'bold', color: '#10b981', margin: '0.5rem 0' }}>₹{allOrdersData.filter(o => o.status !== 'cancelled').reduce((s, o) => s + (o.total || 0), 0)}</div>
-                    <div style={{ fontSize: '0.85rem', color: '#10b981', fontWeight: 600 }}>Total Sales</div>
-                </motion.div>
-
-                <motion.div 
-                    className="stat-card glass-premium"
-                    whileHover={{ scale: 1.02, y: -5 }}
-                    style={{ 
-                        padding: '2rem',
-                        borderRadius: '20px',
-                        background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%)',
-                        border: '2px solid rgba(59, 130, 246, 0.2)',
-                        textAlign: 'center',
-                        position: 'relative',
-                        overflow: 'hidden'
-                    }}
-                >
-                    <div style={{ position: 'absolute', top: '1rem', right: '1rem', opacity: 0.3 }}>
-                        <Store size={24} />
-                    </div>
-                    <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>Menu Items</div>
-                    <div style={{ fontSize: '3rem', fontWeight: 'bold', color: '#3b82f6', margin: '0.5rem 0' }}>{foods.length}</div>
-                    <div style={{ fontSize: '0.85rem', color: '#3b82f6', fontWeight: 600 }}>Available</div>
-                </motion.div>
-
-                <motion.div 
-                    className="stat-card glass-premium"
-                    whileHover={{ scale: 1.02, y: -5 }}
-                    style={{ 
-                        padding: '2rem',
-                        borderRadius: '20px',
-                        background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%)',
-                        border: '2px solid rgba(139, 92, 246, 0.2)',
-                        textAlign: 'center',
-                        position: 'relative',
-                        overflow: 'hidden'
-                    }}
-                >
-                    <div style={{ position: 'absolute', top: '1rem', right: '1rem', opacity: 0.3 }}>
-                        <Target size={24} />
-                    </div>
-                    <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>Delivered</div>
-                    <div style={{ fontSize: '3rem', fontWeight: 'bold', color: '#8b5cf6', margin: '0.5rem 0' }}>{completedOrdersList.length}</div>
-                    <div style={{ fontSize: '0.85rem', color: '#8b5cf6', fontWeight: 600 }}>Completed</div>
-                </motion.div>
-            </motion.div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '2rem' }}>
-                <div>
-                    <h2 style={{ marginBottom: '1.5rem' }}>Orders Queue</h2>
-                    {orders.length === 0 ? (
-                        <div className="card" style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
-                            No active orders. Kitchen is clear!
-                        </div>
-                    ) : (
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                            {orders.map(order => (
-                                <div key={order._id || order.id} className="card">
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <div>
-                                            <h3 style={{ margin: 0 }}>Order #{order._id?.slice(-6) || order.id?.slice(-6)}</h3>
-                                            <p style={{ margin: '0.25rem 0 0', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                                                {order.customerName || 'Customer'} • {order.customerPhone || 'No phone'}
-                                            </p>
-                                            <p style={{ margin: '0.25rem 0 0', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                                                <MapPin size={12} style={{ display: 'inline', marginRight: '0.25rem' }} />
-                                                {order.deliveryAddress || order.address}
-                                            </p>
-                                        </div>
-                                        <div style={{ textAlign: 'right' }}>
-                                            <div style={{ fontWeight: 'bold', fontSize: '1.2rem', color: 'var(--primary)' }}>₹{order.total}</div>
-                                            <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{order.status}</div>
-                                        </div>
-                                    </div>
-                                    <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--border-color)' }}>
-                                        {order.items?.map((item, idx) => (
-                                            <div key={idx} style={{ fontSize: '0.9rem', marginBottom: '0.25rem' }}>
-                                                {item.name} x{item.quantity}
+                    <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr', gap: '2rem', marginTop: '2rem' }}>
+                        <div className="orders-section">
+                            <h2 style={{ marginBottom: '1.5rem', fontSize: '1.5rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                <Clock size={24} color="#f59e0b" /> Live kitchen Queue
+                            </h2>
+                            {orders.length === 0 ? (
+                                <div className="card" style={{ padding: '4rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
+                                    <ChefHat size={48} style={{ opacity: 0.1, marginBottom: '1rem' }} />
+                                    <p>Waiting for new orders... Enjoy the silence!</p>
+                                </div>
+                            ) : (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                                    {orders.map(order => (
+                                        <motion.div 
+                                            key={order._id || order.id} 
+                                            className="card order-item-premium"
+                                            initial={{ opacity: 0, x: -20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                        >
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                                <div>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
+                                                        <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700 }}>#{ (order._id || order.id || '').toString().slice(-6).toUpperCase() }</h3>
+                                                        <span className="status-indicator" style={{ background: 'rgba(255, 255, 255, 0.05)', padding: '4px 10px', borderRadius: '6px', fontSize: '0.7rem', fontWeight: 800, color: 'var(--text-secondary)' }}>
+                                                            {order.status.toUpperCase()}
+                                                        </span>
+                                                    </div>
+                                                    <p style={{ margin: 0, fontSize: '1rem', fontWeight: 600, color: 'white' }}>
+                                                        {order.customerName || 'Anonymous Customer'}
+                                                    </p>
+                                                    
+                                                    <div className="user-address-badge">
+                                                        <MapPin size={16} />
+                                                        <span>Deliver To: {order.deliveryAddress || order.address}</span>
+                                                    </div>
+                                                </div>
+                                                <div style={{ textAlign: 'right' }}>
+                                                    <div style={{ fontWeight: 800, fontSize: '1.5rem', color: '#f59e0b' }}>₹{order.total}</div>
+                                                    <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>{order.items?.length || 0} Items</div>
+                                                </div>
                                             </div>
-                                        ))}
-                                    </div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '1rem', borderTop: '1px solid var(--border-color)' }}>
-                                        <div style={{ fontWeight: 'bold', fontSize: '1.2rem', color: 'var(--primary)' }}>₹{order.total}</div>
-                                        {order.status === 'pending' ? (
-                                            <button onClick={() => handleAcceptOrder(order._id || order.id)} className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                                <CheckCircle size={16} /> ACCEPT ORDER
-                                            </button>
-                                        ) : order.status === 'preparing' || order.status === 'confirmed' ? (
-                                            <button onClick={() => ordersAPI.updateStatus(order._id || order.id, 'ready').then(fetchData)} className="btn btn-success" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                                <CheckCircle size={16} /> FOOD READY
-                                            </button>
-                                        ) : (
-                                            <button disabled className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                                <CheckCircle size={16} /> {order.status.toUpperCase()}
-                                            </button>
-                                        )}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
 
-                {/* Customer Data Section */}
-                <div>
-                    <h2 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <Users size={24} color="#10b981" />
-                        Customer Data
-                    </h2>
-                    {customerData.length === 0 ? (
-                        <div className="card" style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
-                            No customer data yet
-                        </div>
-                    ) : (
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                            {customerData.map((customer, i) => (
-                                <div key={i} className="card" style={{ padding: '1rem' }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                                        <div style={{ fontWeight: 600, fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                            <Users size={16} />
-                                            {customer.name}
-                                        </div>
-                                        <div style={{ fontWeight: 700, color: '#10b981' }}>₹{customer.totalSpent}</div>
-                                    </div>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.25rem' }}>
-                                        <Phone size={14} />
-                                        {customer.phone}
-                                    </div>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.25rem' }}>
-                                        <MapPin size={14} />
-                                        {customer.address}
-                                    </div>
-                                    <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                                        {customer.orders} order{customer.orders > 1 ? 's' : ''}
-                                    </div>
+                                            <div style={{ margin: '1rem 0', padding: '1rem', background: 'rgba(255, 255, 255, 0.02)', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.03)' }}>
+                                                {order.items?.map((item, idx) => (
+                                                    <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                                                        <span style={{ fontWeight: 600 }}>{item.name} <span style={{ color: 'var(--primary)', marginLeft: '0.5rem' }}>x{item.quantity}</span></span>
+                                                        <span style={{ color: 'var(--text-secondary)' }}>₹{item.price * item.quantity}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+
+                                            <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+                                                {order.status === 'pending' ? (
+                                                    <button onClick={() => handleAcceptOrder(order._id || order.id)} className="btn btn-primary" style={{ flex: 1, padding: '1rem', borderRadius: '14px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                                                        <CheckCircle size={20} /> START PREPARING
+                                                    </button>
+                                                ) : order.status === 'preparing' || order.status === 'confirmed' ? (
+                                                    <button onClick={() => ordersAPI.updateStatus(order._id || order.id, 'ready').then(fetchData)} className="btn btn-success" style={{ flex: 1, padding: '1rem', borderRadius: '14px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                                                        <Zap size={20} /> READY FOR PICKUP
+                                                    </button>
+                                                ) : (
+                                                    <button disabled className="btn btn-secondary" style={{ flex: 1, padding: '1rem', borderRadius: '14px', fontWeight: 700, opacity: 0.5 }}>
+                                                        ORDER {order.status.replace(/_/g, ' ').toUpperCase()}
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </motion.div>
+                                    ))}
                                 </div>
-                            ))}
+                            )}
                         </div>
-                    )}
-                </div>
-            </div>
+
+                        <div className="crm-section">
+                            <h2 style={{ marginBottom: '1.5rem', fontSize: '1.5rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                <Users size={24} color="#10b981" /> Top Customers
+                            </h2>
+                            {customerData.length === 0 ? (
+                                <div className="card" style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
+                                    <Users size={48} style={{ opacity: 0.1, marginBottom: '1rem' }} />
+                                    <p>Building your customer base...</p>
+                                </div>
+                            ) : (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                    {customerData.map((customer, i) => (
+                                        <motion.div 
+                                            key={i} 
+                                            className="card" 
+                                            style={{ padding: '1.25rem' }}
+                                            whileHover={{ x: 5 }}
+                                        >
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                                                <div style={{ fontWeight: 700, fontSize: '1.1rem', color: 'white' }}>{customer.name}</div>
+                                                <div style={{ fontWeight: 800, color: '#10b981' }}>₹{customer.totalSpent}</div>
+                                            </div>
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                                                    <Phone size={14} color="#f59e0b" />
+                                                    {customer.phone}
+                                                </div>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                                                    <MapPin size={14} color="#ef4444" />
+                                                    {customer.address}
+                                                </div>
+                                            </div>
+                                            <div style={{ marginTop: '0.75rem', fontSize: '0.8rem', fontWeight: 600, color: 'var(--primary)' }}>
+                                                {customer.orders} Successful Orders
+                                            </div>
+                                        </motion.div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
 
             {/* Food Management Modal */}
             <div>

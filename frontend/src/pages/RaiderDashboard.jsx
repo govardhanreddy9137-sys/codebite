@@ -181,67 +181,101 @@ const RaiderDashboard = () => {
                     </button>
                 </div>
             </div>
-
-            <div className="raider-stats-grid">
+                       <div className="raider-stats-grid">
                 {[
                     { label: 'Available', value: availableOrders.length, color: '#10b981', icon: '🔔' },
                     { label: 'Completed', value: stats.completed, color: '#3b82f6', icon: '✅' },
                     { label: 'Revenue', value: `₹${stats.completedRevenue.toLocaleString()}`, color: '#8b5cf6', icon: '💰' },
                     { label: 'Active', value: assignedOrders.length, color: '#f59e0b', icon: '🚀' }
                 ].map((stat, index) => (
-                    <div key={index} className="raider-card" style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>{stat.icon}</div>
-                        <div style={{ color: stat.color, fontSize: '2rem', fontWeight: 800 }}>{stat.value}</div>
-                        <div style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '0.85rem' }}>{stat.label}</div>
+                    <div key={index} className="raider-card stat-card-premium">
+                        <div className="stat-icon-wrapper" style={{ color: stat.color, background: `${stat.color}15` }}>{stat.icon}</div>
+                        <div style={{ color: stat.color, fontSize: '2.5rem', fontWeight: 800 }}>{stat.value}</div>
+                        <div style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '0.9rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>{stat.label}</div>
                     </div>
                 ))}
             </div>
 
-            <h2 style={{ color: 'white', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <Route size={28} color="#3b82f6" /> Active Deliveries
+            <h2 style={{ color: 'white', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1.8rem', fontWeight: 700 }}>
+                <Route size={32} color="#3b82f6" /> Active Deliveries
             </h2>
             
             {assignedOrders.length === 0 ? (
-                <div className="raider-card" style={{ textAlign: 'center', color: 'rgba(255, 255, 255, 0.5)' }}>No active deliveries</div>
+                <div className="raider-card" style={{ textAlign: 'center', color: 'rgba(255, 255, 255, 0.4)', padding: '4rem' }}>
+                    <Package size={48} style={{ opacity: 0.2, marginBottom: '1rem' }} />
+                    <p>No active deliveries in your queue</p>
+                </div>
             ) : assignedOrders.map(order => (
-                <div key={order._id || order.id} className="raider-card" style={{ marginBottom: '1.5rem' }}>
-                    <div style={{ marginBottom: '1rem' }}>
-                        <div style={{ fontWeight: 700, color: '#3b82f6', marginBottom: '0.5rem' }}><Store size={16} style={{ display: 'inline', marginRight: '0.5rem' }} /> {order.restaurant || 'Restaurant'}</div>
-                        <div style={{ fontSize: '0.9rem', color: '#10b981', display: 'flex', gap: '0.5rem', marginBottom: '0.4rem' }}><Package size={14} /> {order.restaurantAddress || 'Pickup Location'}</div>
-                        <div style={{ fontSize: '0.9rem', color: '#ef4444', display: 'flex', gap: '0.5rem' }}><MapPin size={14} /> {order.deliveryAddress || order.address}</div>
+                <div key={order._id || order.id} className="raider-card order-item-premium" style={{ marginBottom: '2rem' }}>
+                    <div className="restaurant-name-badge">
+                        <Store size={18} />
+                        {order.restaurant || (order.items && order.items[0]?.restaurant) || 'Unknown Restaurant'}
                     </div>
-                    {order.status === 'out_for_delivery' ? (
-                        <button onClick={() => handleDelivered(order._id || order.id)} className="btn btn-primary" style={{ width: '100%', background: '#10b981' }}>MARK AS DELIVERED</button>
-                    ) : (
-                        <button onClick={() => handleStatusUpdate(order._id || order.id, 'out_for_delivery')} className="btn btn-primary" style={{ width: '100%', background: '#f59e0b' }}>PICKED UP</button>
-                    )}
+                    
+                    <div className="address-box">
+                        <div style={{ fontSize: '1.1rem', color: '#10b981', display: 'flex', gap: '1rem', marginBottom: '0.8rem', fontWeight: 600 }}>
+                            <Package size={20} /> 
+                            <span>Pickup: {order.restaurantAddress || 'Check Map'}</span>
+                        </div>
+                        <div style={{ fontSize: '1.1rem', color: '#ef4444', display: 'flex', gap: '1rem', fontWeight: 600 }}>
+                            <MapPin size={20} /> 
+                            <span>Drop-off: {order.deliveryAddress || order.address}</span>
+                        </div>
+                    </div>
+
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.5rem' }}>
+                        <div className="status-indicator" style={{ background: order.status === 'out_for_delivery' ? 'rgba(245, 158, 11, 0.1)' : 'rgba(59, 130, 246, 0.1)', color: order.status === 'out_for_delivery' ? '#f59e0b' : '#3b82f6' }}>
+                            {order.status.replace(/_/g, ' ')}
+                        </div>
+                        {order.status === 'out_for_delivery' ? (
+                            <button onClick={() => handleDelivered(order._id || order.id)} className="btn btn-primary" style={{ padding: '1rem 2.5rem', background: '#10b981', borderRadius: '14px', fontWeight: 700 }}>MARK AS DELIVERED</button>
+                        ) : (
+                            <button onClick={() => handleStatusUpdate(order._id || order.id, 'out_for_delivery')} className="btn btn-primary" style={{ padding: '1rem 2.5rem', background: '#f59e0b', borderRadius: '14px', fontWeight: 700 }}>PICKED UP</button>
+                        )}
+                    </div>
                 </div>
             ))}
 
-            <button onClick={() => setShowHistory(!showHistory)} className="btn btn-outline" style={{ marginBottom: '1.5rem' }}>
-                {showHistory ? 'Hide History' : 'Show History'}
+            <button onClick={() => setShowHistory(!showHistory)} className="btn btn-outline" style={{ marginBottom: '2rem', borderRadius: '12px' }}>
+                {showHistory ? 'Hide Delivery History' : 'View Delivery History'}
             </button>
 
             {showHistory && (
-                <div className="raider-card" style={{ marginBottom: '2rem' }}>
-                    <h2 style={{ marginBottom: '1rem' }}>History</h2>
-                    {completedOrders.length === 0 ? <p>No history</p> : completedOrders.map(o => (
-                        <div key={o._id || o.id} style={{ padding: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                            <div style={{ fontWeight: 'bold' }}>#{o._id?.slice(-6).toUpperCase()} - ₹{o.total}</div>
-                            <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.6)' }}>{o.deliveryAddress}</div>
+                <div className="raider-card" style={{ marginBottom: '3rem' }}>
+                    <h2 style={{ marginBottom: '1.5rem', fontSize: '1.5rem' }}>Completed Tasks</h2>
+                    {completedOrders.length === 0 ? <p style={{ color: 'rgba(255,255,255,0.4)' }}>No successfully delivered orders yet</p> : completedOrders.map(o => (
+                        <div key={o._id || o.id} style={{ padding: '1.25rem', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div>
+                                <div style={{ fontWeight: 700, fontSize: '1.1rem', marginBottom: '0.25rem' }}>#{o._id?.slice(-6).toUpperCase()}</div>
+                                <div style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.5)' }}>{o.deliveryAddress}</div>
+                            </div>
+                            <div style={{ color: '#10b981', fontWeight: 800 }}>₹{o.total}</div>
                         </div>
                     ))}
                 </div>
             )}
 
-            <h2 style={{ color: 'white', marginBottom: '1.5rem' }}><Zap size={28} color="#f59e0b" /> New Orders</h2>
+            <h2 style={{ color: 'white', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1.8rem', fontWeight: 700 }}>
+                <Zap size={32} color="#f59e0b" /> New Delivery Opportunities
+            </h2>
             {availableOrders.length === 0 ? (
-                <div className="raider-card" style={{ textAlign: 'center', color: 'rgba(255,255,255,0.5)' }}>No new orders</div>
+                <div className="raider-card" style={{ textAlign: 'center', color: 'rgba(255, 255, 255, 0.4)', padding: '4rem' }}>
+                    <BellOff size={48} style={{ opacity: 0.2, marginBottom: '1rem' }} />
+                    <p>Scanning for new orders to deliver...</p>
+                </div>
             ) : availableOrders.map(order => (
-                <div key={order._id || order.id} className="raider-card" style={{ marginBottom: '1.5rem', border: isAlarming ? '2px solid #ef4444' : '1px solid rgba(255,255,255,0.1)' }}>
-                    <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>{order.restaurant || 'Store'}</div>
-                    <div style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', marginBottom: '1rem' }}>{order.deliveryAddress}</div>
-                    <button onClick={() => handleAccept(order._id || order.id)} className="btn btn-primary" style={{ width: '100%' }}>ACCEPT TASK</button>
+                <div key={order._id || order.id} className="raider-card" style={{ marginBottom: '2rem', border: isAlarming ? '2px solid #ef4444' : '1px solid rgba(255,255,255,0.1)' }}>
+                    <div className="restaurant-name-badge" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b' }}>
+                        <Store size={18} />
+                        {order.restaurant || (order.items && order.items[0]?.restaurant) || 'Merchant'}
+                    </div>
+                    <div style={{ fontSize: '1.2rem', fontWeight: 600, color: 'white', marginBottom: '1.5rem', display: 'flex', gap: '0.75rem' }}>
+                        <MapPin size={24} color="#ef4444" />
+                        <span>Deliver to: {order.deliveryAddress || order.address}</span>
+                    </div>
+                    <button onClick={() => handleAccept(order._id || order.id)} className="btn btn-primary" style={{ width: '100%', padding: '1.25rem', fontSize: '1.1rem', fontWeight: 800, borderRadius: '16px', background: 'linear-gradient(135deg, #3b82f6, #2563eb)' }}>
+                        ACCEPT DELIVERY TASK
+                    </button>
                 </div>
             ))}
         </div>

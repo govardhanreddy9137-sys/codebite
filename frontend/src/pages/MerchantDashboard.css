@@ -3,21 +3,55 @@
     max-width: 1400px;
     margin: 0 auto;
     color: white;
+    min-height: 100vh;
+    background: radial-gradient(circle at top left, rgba(245, 158, 11, 0.05), transparent),
+                radial-gradient(circle at bottom right, rgba(239, 68, 68, 0.05), transparent);
 }
 
 .card {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 1.5rem;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card:hover {
-    border-color: rgba(255, 48, 8, 0.3);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    border-color: rgba(245, 158, 11, 0.3);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.order-item-premium {
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.order-item-premium::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10%;
+    bottom: 10%;
+    width: 4px;
+    background: var(--primary);
+    border-radius: 2px;
+}
+
+.user-address-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin: 1rem 0;
+    border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
 .btn-success {
