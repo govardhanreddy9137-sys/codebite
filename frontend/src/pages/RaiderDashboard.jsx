@@ -43,33 +43,24 @@ const RaiderDashboard = () => {
 
     const playIncomingTaskAlarm = () => {
         if (!soundEnabled || isAlarming) return;
-        const ctx = audioContextRef.current;
-        if (!ctx) return;
-        if (ctx.state === 'suspended') ctx.resume();
         setIsAlarming(true);
-        if (alarmIntervalRef.current) clearInterval(alarmIntervalRef.current);
-        const playSound = () => {
-            try {
-                const now = ctx.currentTime;
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(880, now);
-                gain.gain.setValueAtTime(0.5, now);
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start();
-                osc.stop(now + 0.3);
-            } catch (e) {}
+        
+        const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/951/951-preview.mp3'); // Large emergency alarm
+        audio.loop = true;
+        audio.volume = 1.0;
+        
+        const startAlarm = () => {
+            audio.play().catch(e => console.error('Sound play failed:', e));
         };
-        playSound();
-        alarmIntervalRef.current = setInterval(playSound, 1000);
+
+        startAlarm();
+        alarmIntervalRef.current = audio;
     };
 
     const stopAlarm = () => {
         setIsAlarming(false);
         if (alarmIntervalRef.current) {
-            clearInterval(alarmIntervalRef.current);
+            alarmIntervalRef.current.pause();
             alarmIntervalRef.current = null;
         }
     };

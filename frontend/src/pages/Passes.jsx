@@ -20,7 +20,6 @@ const Passes = () => {
     const navigate = useNavigate();
     const [selectedPass, setSelectedPass] = useState(null);
     const [processing, setProcessing] = useState(false);
-    const [userPasses, setUserPasses] = useState([]);
 
     const passes = [
         {
@@ -28,7 +27,7 @@ const Passes = () => {
             name: 'Weekly Meal Pass',
             price: 599,
             duration: '7 days',
-            discount: '10% off',
+            discount: '10%',
             benefits: ['10% discount on all orders', 'Free delivery', 'Priority support'],
             icon: <Star size={24} />,
             color: '#3b82f6',
@@ -39,7 +38,7 @@ const Passes = () => {
             name: 'Monthly Meal Pass',
             price: 1999,
             duration: '30 days',
-            discount: '20% off',
+            discount: '20%',
             benefits: ['20% discount on all orders', 'Free delivery', 'Exclusive deals', 'Birthday treat'],
             icon: <Crown size={24} />,
             color: '#8b5cf6',
@@ -50,7 +49,7 @@ const Passes = () => {
             name: 'Enterprise Pass',
             price: 4999,
             duration: '90 days',
-            discount: '30% off',
+            discount: '30%',
             benefits: ['30% discount on all orders', 'Free delivery', 'VIP support', 'Catering discounts', 'Team meals'],
             icon: <Shield size={24} />,
             color: '#10b981',
@@ -58,85 +57,47 @@ const Passes = () => {
         }
     ];
 
-    useEffect(() => {
-        // Load user's active passes
-        if (user?.subscription) {
-            setUserPasses([user.subscription]);
-        }
-    }, [user]);
-
-    const handlePurchasePass = async (pass) => {
-        if (!user) {
-            alert('Please login to purchase passes');
-            return;
-        }
-
-        setProcessing(true);
-        
-        try {
-            // Simulate payment processing
-            await new Promise(resolve => setTimeout(resolve, 2000));
-
-            // Update user subscription
-            const subscription = {
-                type: pass.id,
-                name: pass.name,
-                startDate: new Date().toISOString(),
-                endDate: new Date(Date.now() + (pass.duration === '7 days' ? 7 : pass.duration === '30 days' ? 30 : 90) * 24 * 60 * 60 * 1000).toISOString(),
-                discount: parseInt(pass.discount),
-                benefits: pass.benefits,
-                price: pass.price,
-                isActive: true
-            };
-
-            await updateUser({ subscription });
-            setUserPasses([subscription]);
-            
-            alert(`🎉 Successfully purchased ${pass.name}! You now have ${pass.discount} discount on all orders.`);
-            setSelectedPass(null);
-        } catch (error) {
-            alert('Payment failed. Please try again.');
-        } finally {
-            setProcessing(false);
-        }
-    };
-
-    const handleUsePassForOrder = () => {
-        if (cart.length === 0) {
-            alert('Please add items to cart first');
-            return;
-        }
-
-        const activePass = userPasses.find(pass => pass.isActive);
-        if (!activePass) {
-            alert('No active pass found');
-            return;
-        }
-
-        // Apply pass discount to cart
-        const discount = activePass.discount;
-        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const discountedTotal = total * (1 - discount / 100);
-
-        alert(`🎁 Pass Applied! You saved ₹${(Number(total || 0) - Number(discountedTotal || 0)).toFixed(2)} with ${activePass.discount}% discount!`);
-        
-        // Proceed to checkout with discounted price
-        // This would integrate with your existing checkout system
-    };
-
     const isPassActive = (pass) => {
-        return userPasses.some(userPass => userPass.type === pass.id && userPass.isActive);
+        return user?.subscription?.planId === pass.id && user?.subscription?.status === 'active';
     };
 
-    const getDaysRemaining = (pass) => {
-        const userPass = userPasses.find(p => p.type === pass.id && p.isActive);
-        if (!userPass) return 0;
+    const hasAnyActivePass = () => {
+        return user?.subscription?.status === 'active';
+    };
+
+    const getActivePassPrice = () => {
+        if (!hasAnyActivePass()) return 0;
+        const activePass = passes.find(p => p.id === user.subscription.planId);
+        return activePass ? activePass.price : 0;
+    };
+
+    const getDaysRemaining = () => {
+        if (!user?.subscription?.endDate) return 0;
         
-        const endDate = new Date(userPass.endDate);
+        const endDate = new Date(user.subscription.endDate);
         const now = new Date();
-        const diffTime = Math.abs(endDate - now);
+        const diffTime = endDate - now;
+        if (diffTime <= 0) return 0;
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         return diffDays;
+    };
+
+    const handleUpgradePass = (pass) => {
+        // Simple upgrade logic: just buy the new pass
+        // In a real app, you might prorate the price
+        const passItem = { 
+            ...pass, 
+            _id: `pass_${pass.id}`,
+            isPass: true, 
+            category: 'Passes',
+            isUpgrade: true,
+            oldPassId: user.subscription.planId,
+            image: 'https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=200&auto=format&fit=crop'
+        };
+        
+        addToCart(passItem);
+        showToast(`Upgrading to ${pass.name}!`, 'info');
+        navigate('/cart?checkout=true');
     };
 
     return (
@@ -151,31 +112,42 @@ const Passes = () => {
                         <Ticket size={32} />
                     </div>
                     <div>
-                        <h1>Meal Passes</h1>
-                        <p>Get exclusive discounts and benefits with our meal passes</p>
+                        <h1>Meal Passes (Subscriptions)</h1>
+                        <p>Get exclusive discounts and benefits with our premium meal passes</p>
                     </div>
                 </motion.div>
 
-                {/* Active Pass Display */}
-                {userPasses.some(pass => pass.isActive) && (
+                {/* Active Pass Display - More Prominent */}
+                {hasAnyActivePass() && (
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="active-pass-display glass"
+                        initial={{ opacity: 0, scale: 0.9, y: 30 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        className="active-pass-display-premium glass-premium"
                     >
-                        <div className="active-pass-content">
-                            <div className="active-pass-info">
-                                <h3>🎉 Active Pass</h3>
-                                <p>{userPasses.find(pass => pass.isActive)?.name}</p>
-                                <p>Valid until: {new Date(userPasses.find(pass => pass.isActive)?.endDate).toLocaleDateString()}</p>
+                        <div className="active-pass-glow"></div>
+                        <div className="active-pass-content-premium">
+                            <div className="active-pass-main">
+                                <div className="pass-status-icon">
+                                    <Zap size={32} fill="var(--primary)" />
+                                </div>
+                                <div className="active-pass-info-premium">
+                                    <h3>🎉 You are a Premium Member!</h3>
+                                    <h2>{user.subscription.name}</h2>
+                                    <div className="pass-stats-mini">
+                                        <span className="stat-item"><Clock size={14}/> {getDaysRemaining()} days left</span>
+                                        <span className="stat-item"><Percent size={14}/> {passes.find(p => p.id === user.subscription.planId)?.discount} Discount</span>
+                                    </div>
+                                </div>
                             </div>
-                            <button 
-                                className="use-pass-btn btn btn-primary"
-                                onClick={handleUsePassForOrder}
-                            >
-                                <ShoppingCart size={18} />
-                                Use Pass for Order
-                            </button>
+                            <div className="active-pass-actions">
+                                <button 
+                                    className="use-pass-btn-premium"
+                                    onClick={() => navigate('/menu')}
+                                >
+                                    <ShoppingCart size={18} />
+                                    Order Now
+                                </button>
+                            </div>
                         </div>
                     </motion.div>
                 )}
@@ -185,7 +157,8 @@ const Passes = () => {
             <div className="passes-grid">
                 {passes.map((pass, index) => {
                     const isActive = isPassActive(pass);
-                    const daysRemaining = getDaysRemaining(pass);
+                    const daysRemaining = getDaysRemaining();
+                    const canUpgrade = hasAnyActivePass() && !isActive && pass.price > getActivePassPrice();
                     
                     return (
                         <motion.div
@@ -193,8 +166,8 @@ const Passes = () => {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.1 }}
-                            className={`pass-card ${isActive ? 'active' : ''} ${pass.popular ? 'popular' : ''} glass`}
-                            whileHover={{ y: -5 }}
+                            className={`pass-card ${isActive ? 'active' : ''} ${pass.popular ? 'popular' : ''} ${canUpgrade ? 'upgrade-available' : ''} glass`}
+                            whileHover={{ y: -10 }}
                         >
                             {pass.popular && (
                                 <div className="popular-badge">
@@ -207,6 +180,13 @@ const Passes = () => {
                                 <div className="active-badge">
                                     <CheckCircle size={16} />
                                     Active ({daysRemaining} days left)
+                                </div>
+                            )}
+
+                            {canUpgrade && (
+                                <div className="upgrade-badge">
+                                    <Zap size={16} />
+                                    Available Upgrade
                                 </div>
                             )}
 
@@ -249,13 +229,25 @@ const Passes = () => {
                                 {isActive ? (
                                     <div className="active-info">
                                         <Shield size={16} />
-                                        <span>Active - {daysRemaining} days remaining</span>
+                                        <span>Current Active Plan</span>
                                     </div>
+                                ) : canUpgrade ? (
+                                    <button
+                                        className="purchase-btn upgrade-btn"
+                                        onClick={() => handleUpgradePass(pass)}
+                                    >
+                                        <TrendingUp size={18} />
+                                        UPGRADE NOW
+                                    </button>
                                 ) : (
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                                    <div className="action-buttons-grid">
                                         <button
-                                            className="purchase-btn btn btn-outline"
+                                            className="purchase-btn btn-outline"
                                             onClick={() => {
+                                                if (!user) {
+                                                    navigate('/login');
+                                                    return;
+                                                }
                                                 addToCart({ 
                                                     ...pass, 
                                                     _id: `pass_${pass.id}`,
@@ -271,13 +263,12 @@ const Passes = () => {
                                             {cart.some(item => item._id === `pass_${pass.id}`) ? 'IN CART' : 'ADD TO CART'}
                                         </button>
                                         <button
-                                            className="purchase-btn btn btn-primary"
+                                            className="purchase-btn btn-primary"
                                             onClick={async () => {
                                                 if (!user) {
                                                     navigate('/login');
                                                     return;
                                                 }
-                                                // Quick Buy: Add to cart and immediately place order
                                                 const passItem = { 
                                                     ...pass, 
                                                     _id: `pass_${pass.id}`,

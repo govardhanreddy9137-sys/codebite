@@ -40,35 +40,22 @@ const MerchantDashboard = () => {
         if (!soundEnabled || isAlarming) return;
         setIsAlarming(true);
         
-        const playBell = () => {
-            try {
-                const ctx = audioContextRef.current;
-                const now = ctx.currentTime;
-                const createBellNote = (freq, startTime, duration) => {
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(freq, startTime);
-                    gain.gain.setValueAtTime(0.8, startTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
-                    osc.connect(gain);
-                    gain.connect(ctx.destination);
-                    osc.start(startTime);
-                    osc.stop(startTime + duration);
-                };
-                createBellNote(880, now, 0.5);
-                createBellNote(1320, now + 0.1, 0.4);
-                createBellNote(440, now + 0.2, 0.6);
-            } catch (e) {}
+        const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/951/951-preview.mp3'); // Large siren alarm
+        audio.loop = true;
+        audio.volume = 1.0;
+        
+        const startAlarm = () => {
+            audio.play().catch(e => console.error('Sound play failed:', e));
         };
-        playBell();
-        alarmIntervalRef.current = setInterval(playBell, 1200);
+
+        startAlarm();
+        alarmIntervalRef.current = audio;
     };
 
     const stopAlarm = () => {
         setIsAlarming(false);
         if (alarmIntervalRef.current) {
-            clearInterval(alarmIntervalRef.current);
+            alarmIntervalRef.current.pause();
             alarmIntervalRef.current = null;
         }
     };

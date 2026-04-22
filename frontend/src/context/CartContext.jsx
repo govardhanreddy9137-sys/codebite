@@ -184,7 +184,40 @@ export const CartProvider = ({ children }) => {
         if (orderToTrack) {
             const orderId = orderToTrack._id || orderToTrack.id;
             
-            showToast('Order confirmed! Enjoy your meal 🍱', 'success');
+            // Check if there's a pass in the order
+            const passItem = orderToTrack.items?.find(item => item.id && item.id.startsWith('pass_'));
+            
+            if (passItem) {
+                // Large sounds alarm for subscription
+                try {
+                    const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3'); // Loud success sound
+                    audio.volume = 0.8;
+                    audio.play();
+                } catch (e) {
+                    console.error('Failed to play alarm sound:', e);
+                }
+
+                showToast(`🎉 Subscription Success! ${passItem.name} activated!`, 'success');
+                
+                // Update user subscription in database
+                const durationDays = passItem.id.includes('basic') ? 7 : passItem.id.includes('premium') ? 30 : 90;
+                const subscription = {
+                    planId: passItem.id.replace('pass_', ''),
+                    name: passItem.name,
+                    startDate: new Date().toISOString(),
+                    endDate: new Date(Date.now() + durationDays * 24 * 60 * 60 * 1000).toISOString(),
+                    durationDays: durationDays,
+                    status: 'active'
+                };
+                
+                try {
+                    await updateUser({ subscription });
+                } catch (err) {
+                    console.error('Failed to update subscription:', err);
+                }
+            } else {
+                showToast('Order confirmed! Enjoy your meal 🍱', 'success');
+            }
             
             try {
                 await updateOrderStatus(orderId, 'confirmed');
