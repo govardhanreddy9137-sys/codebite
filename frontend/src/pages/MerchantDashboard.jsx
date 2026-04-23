@@ -353,7 +353,7 @@ const MerchantDashboard = () => {
                                             Order #{(order._id || order.id || '').toString().slice(-6).toUpperCase()}
                                         </div>
                                         <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                                            {(order.items && order.items[0]?.restaurant) || order.restaurant || order.restaurantName || 'Restaurant'} → {order.deliveryAddress || order.address}
+                                            {order.restaurant || (order.items && order.items[0]?.restaurant) || 'Main Kitchen'} → {order.deliveryAddress || order.address}
                                         </div>
                                         <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
                                             ₹{order.total?.toFixed(2)} • {new Date(order.deliveredAt || order.updatedAt).toLocaleString()}

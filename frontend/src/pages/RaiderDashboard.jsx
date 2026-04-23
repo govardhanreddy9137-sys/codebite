@@ -207,9 +207,9 @@ const RaiderDashboard = () => {
                 </div>
             ) : assignedOrders.map(order => (
                 <div key={order._id || order.id} className="raider-card order-item-premium" style={{ marginBottom: '2rem' }}>
-                    <div className="restaurant-name-badge">
-                        <Store size={18} />
-                        {order.restaurant || (order.items && order.items[0]?.restaurant) || 'Unknown Restaurant'}
+                    <div className="restaurant-name-badge" style={{ background: 'rgba(59, 130, 246, 0.15)', color: '#60a5fa', padding: '8px 16px', fontSize: '1rem' }}>
+                        <Store size={20} />
+                        {order.restaurant || (order.items && order.items[0]?.restaurant) || 'Main Kitchen'}
                     </div>
                     
                     <div className="address-box">
@@ -247,7 +247,8 @@ const RaiderDashboard = () => {
                         <div key={o._id || o.id} style={{ padding: '1.25rem', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <div>
                                 <div style={{ fontWeight: 700, fontSize: '1.1rem', marginBottom: '0.25rem' }}>#{o._id?.slice(-6).toUpperCase()}</div>
-                                <div style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.5)' }}>{o.deliveryAddress}</div>
+                                <div style={{ fontSize: '0.9rem', color: '#60a5fa', fontWeight: 600, marginBottom: '0.25rem' }}>{o.restaurant || (o.items && o.items[0]?.restaurant) || 'Main Kitchen'}</div>
+                                <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)' }}>{o.deliveryAddress}</div>
                             </div>
                             <div style={{ color: '#10b981', fontWeight: 800 }}>₹{o.total}</div>
                         </div>
@@ -265,9 +266,9 @@ const RaiderDashboard = () => {
                 </div>
             ) : availableOrders.map(order => (
                 <div key={order._id || order.id} className="raider-card" style={{ marginBottom: '2rem', border: isAlarming ? '2px solid #ef4444' : '1px solid rgba(255,255,255,0.1)' }}>
-                    <div className="restaurant-name-badge" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b' }}>
-                        <Store size={18} />
-                        {order.restaurant || (order.items && order.items[0]?.restaurant) || 'Merchant'}
+                    <div className="restaurant-name-badge" style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#fbbf24', padding: '8px 16px', fontSize: '1rem' }}>
+                        <Store size={20} />
+                        {order.restaurant || (order.items && order.items[0]?.restaurant) || 'Merchant Partner'}
                     </div>
                     <div style={{ fontSize: '1.2rem', fontWeight: 600, color: 'white', marginBottom: '1.5rem', display: 'flex', gap: '0.75rem' }}>
                         <MapPin size={24} color="#ef4444" />

@@ -122,7 +122,9 @@ export const CartProvider = ({ children }) => {
             groupCode: options.groupCode || '',
             customerPhone: options.customerPhone?.trim() || user?.phone?.trim() || '9023865544', // Fallback to merchant phone if all else fails
             isGift: options.isGift || false,
-            giftRecipient: options.giftRecipient || ''
+            giftRecipient: options.giftRecipient || '',
+            restaurant: cart[0]?.restaurant || 'Multiple',
+            restaurantAddress: cart[0]?.restaurantAddress || 'Main Kitchen, Zone A'
         };
 
         console.log('=== ORDER CREATION DEBUG START ===');

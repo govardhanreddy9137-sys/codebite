@@ -60,6 +60,8 @@ const orderSchema = new mongoose.Schema({
     lat: { type: Number },
     lng: { type: Number }
   },
+  restaurant: { type: String, default: 'Multiple' },
+  restaurantAddress: { type: String, default: 'Main Kitchen, Zone A' },
   assignedAt: { type: Date }
 }, { timestamps: true });
 
