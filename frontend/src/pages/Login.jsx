@@ -270,6 +270,19 @@ const Login = () => {
                     <AnimatePresence mode="wait">
                         {step === LOGIN_STEPS.EMAIL && !showStaffPortals && (
                             <motion.form key="email" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} onSubmit={handleEmailSubmit} className="login-form">
+                                <div className="social-login-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '2rem' }}>
+                                    <button type="button" className="glass-btn social-btn">
+                                        <img src="https://www.svgrepo.com/show/355037/google.svg" width="20" alt="Google" /> <span>Google</span>
+                                    </button>
+                                    <button type="button" className="glass-btn social-btn">
+                                        <img src="https://www.svgrepo.com/show/448204/apple.svg" width="20" alt="Apple" /> <span>Apple</span>
+                                    </button>
+                                </div>
+                                <div className="divider" style={{ display: 'flex', alignItems: 'center', gap: '1rem', margin: '2rem 0', color: 'var(--text-muted)', fontSize: '0.8rem' }}>
+                                    <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }}></div>
+                                    <span>OR CONTINUE WITH</span>
+                                    <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }}></div>
+                                </div>
                                 <div className="input-group">
                                     <label className="input-label">Corporate Email</label>
                                     <div className="input-field-wrapper">
@@ -280,6 +293,9 @@ const Login = () => {
                                 <motion.button type="submit" className="login-btn" disabled={isLoading} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                                     {isLoading ? <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity }}><RefreshCcw size={20} /></motion.div> : <><span>Continue</span><MoveRight size={20} /></>}
                                 </motion.button>
+                                <div style={{ textAlign: 'center', marginTop: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', fontSize: '0.8rem', color: '#10b981' }}>
+                                    <Shield size={14} /> 256-bit AES Secure Connection
+                                </div>
                             </motion.form>
                         )}
                         {step === LOGIN_STEPS.REGISTER && (

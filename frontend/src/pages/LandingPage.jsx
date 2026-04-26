@@ -163,18 +163,76 @@ const LandingPage = () => {
                     <FoodGallery />
                 </div>
 
-                <div className="landing-features" style={{ marginTop: '4rem' }}>
+                <div className="landing-features" style={{ marginTop: '4rem', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '2rem' }}>
                     <div className="feature">
-                        <Sparkles size={20} />
+                        <Sparkles size={20} color="var(--primary)" />
                         <span>Smart Recommendations</span>
                     </div>
                     <div className="feature">
-                        <Clock size={20} />
+                        <Clock size={20} color="#3b82f6" />
                         <span>Real-time Tracking</span>
                     </div>
                     <div className="feature">
-                        <Shield size={20} />
+                        <Shield size={20} color="#10b981" />
                         <span>Secure Payments</span>
+                    </div>
+                </div>
+
+                {/* Statistics Section */}
+                <motion.div 
+                    className="landing-stats glass"
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    style={{ 
+                        marginTop: '6rem', 
+                        display: 'grid', 
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+                        gap: '3rem',
+                        padding: '3rem',
+                        borderRadius: '40px',
+                        width: '100%',
+                        textAlign: 'center'
+                    }}
+                >
+                    <div>
+                        <div style={{ fontSize: '3rem', fontWeight: 900, color: '#FF3008' }}>15k+</div>
+                        <div style={{ color: 'var(--text-secondary)', fontWeight: 600 }}>MEALS DELIVERED</div>
+                    </div>
+                    <div>
+                        <div style={{ fontSize: '3rem', fontWeight: 900, color: '#3b82f6' }}>4.9/5</div>
+                        <div style={{ color: 'var(--text-secondary)', fontWeight: 600 }}>USER RATING</div>
+                    </div>
+                    <div>
+                        <div style={{ fontSize: '3rem', fontWeight: 900, color: '#10b981' }}>20+</div>
+                        <div style={{ color: 'var(--text-secondary)', fontWeight: 600 }}>PREMIUM KITCHENS</div>
+                    </div>
+                    <div>
+                        <div style={{ fontSize: '3rem', fontWeight: 900, color: '#fbbf24' }}>12m</div>
+                        <div style={{ color: 'var(--text-secondary)', fontWeight: 600 }}>AVG. DELIVERY</div>
+                    </div>
+                </motion.div>
+
+                {/* Premium Trust Section */}
+                <div style={{ marginTop: '8rem', textAlign: 'center', width: '100%' }}>
+                    <h3 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '3rem' }}>Why Professional Choice <span style={{ color: '#FF3008' }}>CodeBite</span>?</h3>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+                        {[
+                            { title: 'Corporate Standards', desc: 'Compliant with office protocols and bulk ordering requirements.', icon: <Crown size={32} /> },
+                            { title: 'Flash Delivery', desc: 'Our riders use optimized routes to ensure heat retention.', icon: <Clock size={32} /> },
+                            { title: 'Curated Menus', desc: 'Only the highest-rated kitchens pass our quality audit.', icon: <Utensils size={32} /> }
+                        ].map((item, i) => (
+                            <motion.div 
+                                key={i}
+                                whileHover={{ y: -10 }}
+                                className="glass"
+                                style={{ padding: '3rem 2rem', borderRadius: '32px', textAlign: 'left' }}
+                            >
+                                <div style={{ color: '#FF3008', marginBottom: '1.5rem' }}>{item.icon}</div>
+                                <h4 style={{ fontSize: '1.25rem', fontWeight: 800, marginBottom: '1rem' }}>{item.title}</h4>
+                                <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6' }}>{item.desc}</p>
+                            </motion.div>
+                        ))}
                     </div>
                 </div>
             </div>

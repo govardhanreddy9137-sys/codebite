@@ -119,15 +119,39 @@ const Cart = () => {
 
     return (
         <div className="container" style={{ padding: '40px 0' }}>
-            <div className="cart-header-premium glass-premium" style={{ marginBottom: '3rem', padding: '3rem', borderRadius: '40px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '1rem' }}>
-                    <div className="logo-pulse">
-                        <ShoppingBag size={48} color="var(--primary)" />
+            <div className="cart-header-premium glass-premium" style={{ marginBottom: '3rem', padding: '3rem', borderRadius: '40px', position: 'relative' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '2rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                        <div className="logo-pulse">
+                            <ShoppingBag size={48} color="var(--primary)" />
+                        </div>
+                        <div>
+                            <h1 style={{ margin: 0, fontSize: '2.5rem', fontWeight: 950, letterSpacing: '-1.5px' }}>YOUR SELECTION_</h1>
+                            <p style={{ margin: 0, opacity: 0.6, fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '2px' }}>SECURE PRE-PRODUCTION CHECKOUT</p>
+                        </div>
                     </div>
-                    <div>
-                        <h1 style={{ margin: 0, fontSize: '2.5rem', fontWeight: 950, letterSpacing: '-1.5px' }}>YOUR SELECTION_</h1>
-                        <p style={{ margin: 0, opacity: 0.6, fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '2px' }}>V2.1 PRE-PRODUCTION CHECKOUT</p>
+
+                    {/* Checkout Stepper */}
+                    <div className="checkout-stepper" style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: 'rgba(255,255,255,0.05)', padding: '1rem 2rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--primary)', fontWeight: 800 }}>
+                            <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: 'var(--primary)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem' }}>1</div>
+                            <span>Selection</span>
+                        </div>
+                        <div style={{ width: '30px', height: '2px', background: 'rgba(255,255,255,0.1)' }}></div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
+                            <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem' }}>2</div>
+                            <span>Logistics</span>
+                        </div>
+                        <div style={{ width: '30px', height: '2px', background: 'rgba(255,255,255,0.1)' }}></div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
+                            <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem' }}>3</div>
+                            <span>Payment</span>
+                        </div>
                     </div>
+                </div>
+
+                <div style={{ position: 'absolute', bottom: '-20px', right: '40px', background: '#10b981', color: 'white', padding: '0.5rem 1.5rem', borderRadius: '12px', fontSize: '0.8rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '0.5rem', boxShadow: '0 5px 15px rgba(16, 185, 129, 0.3)' }}>
+                    <ShieldCheck size={16} /> DATA_PROTECTION_ACTIVE
                 </div>
             </div>
 
