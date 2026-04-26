@@ -9,15 +9,23 @@ const Voting = () => {
     const { polls, voteForFood } = useFood();
     const { user } = useAuth();
     const { showToast } = useToast();
-    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('All');
     
     const filteredPolls = useMemo(() => {
-        const filtered = polls.filter(poll => 
+        let filtered = polls.filter(poll => 
             poll.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             poll.description.toLowerCase().includes(searchTerm.toLowerCase())
         );
+
+        if (selectedCategory !== 'All') {
+            filtered = filtered.filter(poll => 
+                poll.category?.toLowerCase() === selectedCategory.toLowerCase() ||
+                (selectedCategory === 'Main Course' && poll.category === 'main')
+            );
+        }
+
         return filtered.sort((a, b) => b.votes - a.votes);
-    }, [polls, searchTerm]);
+    }, [polls, searchTerm, selectedCategory]);
 
     const handleVote = async (pollId) => {
         if (!user) {
@@ -44,8 +52,8 @@ const Voting = () => {
                 </p>
             </div>
 
-            <div style={{ marginBottom: '2rem', display: 'flex', gap: '1rem' }}>
-                <div style={{ flex: 1, position: 'relative' }}>
+            <div style={{ marginBottom: '2rem', display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
+                <div style={{ flex: 1, position: 'relative', minWidth: '300px' }}>
                     <Search style={{ position: 'absolute', left: '15px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} size={20} />
                     <input
                         type="text"
@@ -53,9 +61,35 @@ const Voting = () => {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="form-input"
-                        style={{ paddingLeft: '45px', borderRadius: '0', height: '50px', fontSize: '1.1rem' }}
+                        style={{ paddingLeft: '45px', borderRadius: '12px', height: '54px', fontSize: '1.1rem', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)' }}
                     />
                 </div>
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    {['All', 'Tiffins', 'Shakes', 'Main Course', 'Desserts'].map(cat => (
+                        <button 
+                            key={cat} 
+                            onClick={() => setSelectedCategory(cat)}
+                            className="btn" 
+                            style={{ 
+                                borderRadius: '20px', 
+                                padding: '0.5rem 1.25rem', 
+                                fontSize: '0.85rem', 
+                                fontWeight: 600, 
+                                background: selectedCategory === cat ? 'var(--primary)' : 'rgba(255,255,255,0.05)',
+                                color: selectedCategory === cat ? 'white' : 'var(--text-secondary)',
+                                border: '1px solid ' + (selectedCategory === cat ? 'var(--primary)' : 'rgba(255,255,255,0.1)'),
+                                transition: 'all 0.3s ease'
+                            }}
+                        >
+                            {cat}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '2rem' }}>
+                <TrendingUp size={24} color="var(--primary)" />
+                <h2 style={{ fontSize: '1.5rem', fontWeight: 800, margin: 0, textTransform: 'uppercase', letterSpacing: '1px' }}>Trending Concepts</h2>
             </div>
 
             <div className="breaking-grid">

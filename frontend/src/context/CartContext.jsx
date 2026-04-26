@@ -103,6 +103,9 @@ export const CartProvider = ({ children }) => {
 
         const itemsTotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
+        const penaltyAmount = user?.penalty || 0;
+        const totalWithPenalty = (options.total || itemsTotal) + penaltyAmount;
+
         const newOrder = {
             userId: userId || user?.id || user?._id,
             items: cart.map(item => ({
@@ -112,10 +115,11 @@ export const CartProvider = ({ children }) => {
                 quantity: item.quantity,
                 restaurant: item.restaurant || 'Unknown Restaurant'
             })),
-            total: options.total || itemsTotal,
+            total: totalWithPenalty,
             tax: options.tax || 0,
             deliveryCharge: options.deliveryCharge || 0,
             discount: options.discount || 0,
+            penaltyApplied: penaltyAmount,
             status: 'pending',
             deliveryAddress: options.deliveryAddress || '',
             deliveryRoom: options.deliveryRoom || '',
@@ -143,6 +147,11 @@ export const CartProvider = ({ children }) => {
             
             // Immediately update local orders list to ensure it's visible even without refresh
             setOrders(prev => [savedOrder, ...prev]);
+            
+            if (penaltyAmount > 0) {
+                await updateUser({ penalty: 0 });
+                showToast(`Previous penalty of ₹${penaltyAmount} has been paid!`, 'success');
+            }
             
             clearCart();
             setCurrentOrder(savedOrder);

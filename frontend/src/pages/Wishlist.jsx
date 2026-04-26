@@ -4,11 +4,13 @@ import { useCart } from '../context/CartContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, ShoppingCart, Sparkles, Trash2, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '../context/ToastContext';
 import './Menu.css';
 
 const Wishlist = () => {
     const { foods, wishlist, toggleWishlist } = useFood();
     const { addToCart } = useCart();
+    const { showToast } = useToast();
     const navigate = useNavigate();
 
     const wishlistFoods = useMemo(() => {
@@ -43,15 +45,32 @@ const Wishlist = () => {
             animate="visible"
             variants={containerVariants}
         >
-            <motion.div className="menu-header" variants={itemVariants}>
-                <motion.h1 
-                    initial={{ scale: 0.9, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 0.8 }}
-                >
-                    Your Favorites
-                </motion.h1>
-                <p>A curated collection of your most-loved dishes.</p>
+            <motion.div className="menu-header" variants={itemVariants} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4rem' }}>
+                <div>
+                    <motion.h1 
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.8 }}
+                        style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}
+                    >
+                        Your Favorites <Sparkles size={32} color="var(--primary)" />
+                    </motion.h1>
+                    <p>A curated collection of your most-loved dishes.</p>
+                </div>
+                {wishlistFoods.length > 0 && (
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="btn btn-primary"
+                        onClick={() => {
+                            wishlistFoods.forEach(f => addToCart(f));
+                            showToast('All favorites moved to cart!', 'success');
+                        }}
+                        style={{ padding: '1rem 2rem', borderRadius: '16px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.75rem' }}
+                    >
+                        <ShoppingCart size={20} /> QUICK_ADD_ALL
+                    </motion.button>
+                )}
             </motion.div>
 
             <AnimatePresence mode="popLayout">

@@ -207,23 +207,106 @@ const AdminDashboard = () => {
         { label: 'Completed Orders', value: deliveredOrders, icon: <CheckCircle size={20} />, color: '#059669', trend: 'Done' }
     ];
 
+    const [currentTime, setCurrentTime] = useState(new Date());
+
+    React.useEffect(() => {
+        const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+        return () => clearInterval(timer);
+    }, []);
+
     return (
         <div className="container animate-fade-in">
-            {/* Header */}
+            {/* Header with Clock */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
+                <div>
+                    <h1 style={{ fontSize: '2.5rem', fontWeight: 900, background: 'linear-gradient(135deg, #fff, #666)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Control Center</h1>
+                    <p style={{ color: 'var(--text-secondary)', fontWeight: 600 }}>System Status: <span style={{ color: '#10b981' }}>OPERATIONAL</span></p>
+                </div>
+                <div className="glass" style={{ padding: '1rem 2rem', borderRadius: '16px', textAlign: 'right' }}>
+                    <div style={{ fontSize: '1.5rem', fontWeight: 800, fontFamily: 'monospace' }}>
+                        {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                    </div>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                        {currentTime.toLocaleDateString([], { weekday: 'long', month: 'short', day: 'numeric' })}
+                    </div>
+                </div>
+            </div>
+
+            {/* Stats Grid */}
             <div style={{ marginBottom: '3rem' }}>
                 <motion.div variants={containerVariants} initial="hidden" animate="visible">
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.5rem' }}>
                         {stats.map((s, idx) => (
-                            <motion.div key={s.label} variants={itemVariants} className="glass" style={{ padding: '1.5rem', borderRadius: '16px', textAlign: 'center' }}>
-                                <div style={{ fontSize: '2rem', marginBottom: '0.5rem', color: s.color }}>{s.icon}</div>
-                                <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.25rem' }}>{s.label}</div>
-                                <div style={{ fontSize: '1.75rem', fontWeight: 800 }}>{s.value}</div>
-                                <div style={{ fontSize: '0.75rem', color: s.color, marginTop: '0.5rem' }}>{s.trend}</div>
+                            <motion.div key={s.label} variants={itemVariants} className="glass stat-card-premium" style={{ padding: '2rem', borderRadius: '24px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+                                <div style={{ fontSize: '2.5rem', marginBottom: '1rem', color: s.color, opacity: 0.8 }}>{s.icon}</div>
+                                <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>{s.label}</div>
+                                <div style={{ fontSize: '2.25rem', fontWeight: 900 }}>{s.value}</div>
+                                <div style={{ fontSize: '0.8rem', color: s.color, background: `${s.color}15`, padding: '4px 12px', borderRadius: '20px', display: 'inline-block', marginTop: '1rem', fontWeight: 700 }}>{s.trend}</div>
                             </motion.div>
                         ))}
                     </div>
                 </motion.div>
             </div>
+
+            {/* Revenue Trend Chart */}
+            <motion.div variants={itemVariants} className="glass" style={{ padding: '2.5rem', borderRadius: '32px', marginBottom: '3rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                        <TrendingUp size={24} color="var(--primary)" />
+                        <h2 style={{ fontSize: '1.5rem', fontWeight: 800 }}>Revenue Velocity</h2>
+                    </div>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                        <span style={{ fontSize: '0.8rem', background: 'rgba(255,255,255,0.05)', padding: '4px 10px', borderRadius: '6px' }}>7_DAY_TREND</span>
+                    </div>
+                </div>
+                
+                <div style={{ height: '200px', width: '100%', position: 'relative', marginTop: '2rem' }}>
+                    <svg width="100%" height="100%" viewBox="0 0 1000 200" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.3" />
+                                <stop offset="100%" stopColor="var(--primary)" stopOpacity="0" />
+                            </linearGradient>
+                        </defs>
+                        {/* Grid lines */}
+                        {[0, 50, 100, 150, 200].map(y => (
+                            <line key={y} x1="0" y1={y} x2="1000" y2={y} stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
+                        ))}
+                        {/* Area */}
+                        <path 
+                            d={`M 0 200 ${weeklyOrders.map((d, i) => `L ${i * (1000/6)} ${200 - (d.total / (Math.max(...weeklyOrders.map(x => x.total)) || 1) * 150)}`).join(' ')} L 1000 200 Z`}
+                            fill="url(#chartGradient)"
+                        />
+                        {/* Line */}
+                        <motion.path 
+                            initial={{ pathLength: 0 }}
+                            animate={{ pathLength: 1 }}
+                            transition={{ duration: 2, ease: "easeInOut" }}
+                            d={`M 0 ${200 - (weeklyOrders[0].total / (Math.max(...weeklyOrders.map(x => x.total)) || 1) * 150)} ${weeklyOrders.map((d, i) => `L ${i * (1000/6)} ${200 - (d.total / (Math.max(...weeklyOrders.map(x => x.total)) || 1) * 150)}`).join(' ')}`}
+                            fill="none"
+                            stroke="var(--primary)"
+                            strokeWidth="4"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                        {/* Dots */}
+                        {weeklyOrders.map((d, i) => (
+                            <circle 
+                                key={i}
+                                cx={i * (1000/6)} 
+                                cy={200 - (d.total / (Math.max(...weeklyOrders.map(x => x.total)) || 1) * 150)} 
+                                r="6" 
+                                fill="white"
+                                stroke="var(--primary)"
+                                strokeWidth="3"
+                            />
+                        ))}
+                    </svg>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem', color: 'var(--text-secondary)', fontSize: '0.8rem', fontWeight: 600 }}>
+                        {weeklyOrders.map(d => <span key={d.day}>{d.day.slice(0,3).toUpperCase()}</span>)}
+                    </div>
+                </div>
+            </motion.div>
 
             {/* Delivery History Toggle */}
             <motion.div variants={itemVariants} style={{ marginBottom: '2rem' }}>
@@ -275,6 +358,11 @@ const AdminDashboard = () => {
                                         <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
                                             {order.restaurant || order.restaurantName || 'Restaurant'} → {order.deliveryAddress || order.address}
                                         </div>
+                                        {order.rider?.name && (
+                                            <div style={{ fontSize: '0.8rem', color: '#10b981', fontWeight: 600, marginTop: '0.25rem' }}>
+                                                Delivered by: {order.rider.name}
+                                            </div>
+                                        )}
                                         <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
                                             ₹{order.total?.toFixed(2)} • {new Date(order.deliveredAt || order.updatedAt).toLocaleString()}
                                         </div>

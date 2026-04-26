@@ -407,8 +407,8 @@ const MerchantDashboard = () => {
                         {[
                             { label: 'Active Queue', value: orders.length, color: '#ef4444', icon: <Flame size={24}/>, desc: orders.length > 0 ? 'Orders Pending' : 'Kitchen Clear' },
                             { label: 'Revenue Today', value: `₹${allOrdersData.filter(o => o.status !== 'cancelled').reduce((s, o) => s + (o.total || 0), 0)}`, color: '#10b981', icon: <Trophy size={24}/>, desc: 'Total Sales' },
-                            { label: 'Menu Items', value: foods.length, color: '#3b82f6', icon: <Store size={24}/>, desc: 'Available Items' },
-                            { label: 'Delivered', value: completedOrdersList.length, color: '#8b5cf6', icon: <Target size={24}/>, desc: 'Completed Today' }
+                            { label: 'Kitchen Velocity', value: '94%', color: '#3b82f6', icon: <Activity size={24}/>, desc: 'Efficiency' },
+                            { label: 'Stock Alerts', value: foods.filter(f => f.stock < 10).length, color: '#f59e0b', icon: <AlertCircle size={24}/>, desc: 'Low Inventory' }
                         ].map((stat, idx) => (
                             <motion.div 
                                 key={idx}
@@ -420,6 +420,9 @@ const MerchantDashboard = () => {
                                 <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.5rem' }}>{stat.label}</div>
                                 <div style={{ fontSize: '2.5rem', fontWeight: 800, color: stat.color }}>{stat.value}</div>
                                 <div style={{ fontSize: '0.8rem', fontWeight: 600, color: stat.color, marginTop: '0.5rem' }}>{stat.desc}</div>
+                                {stat.label === 'Stock Alerts' && stat.value > 0 && (
+                                    <div className="pulse-dot" style={{ position: 'absolute', top: '10px', left: '10px', width: '8px', height: '8px', background: '#f59e0b', borderRadius: '50%' }}></div>
+                                )}
                             </motion.div>
                         ))}
                     </div>
@@ -481,7 +484,16 @@ const MerchantDashboard = () => {
                                                         <CheckCircle size={20} /> START PREPARING
                                                     </button>
                                                 ) : order.status === 'preparing' || order.status === 'confirmed' ? (
-                                                    <button onClick={() => ordersAPI.updateStatus(order._id || order.id, 'ready').then(fetchData)} className="btn btn-success" style={{ flex: 1, padding: '1rem', borderRadius: '14px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                                                    <button 
+                                                        onClick={() => {
+                                                            ordersAPI.updateStatus(order._id || order.id, 'ready').then(() => {
+                                                                showToast('Order is ready! Raider notified for pickup 🚀', 'success');
+                                                                fetchData();
+                                                            });
+                                                        }} 
+                                                        className="btn btn-success" 
+                                                        style={{ flex: 1, padding: '1rem', borderRadius: '14px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+                                                    >
                                                         <Zap size={20} /> READY FOR PICKUP
                                                     </button>
                                                 ) : (

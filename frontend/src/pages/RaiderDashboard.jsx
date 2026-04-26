@@ -207,9 +207,17 @@ const RaiderDashboard = () => {
                 </div>
             ) : assignedOrders.map(order => (
                 <div key={order._id || order.id} className="raider-card order-item-premium" style={{ marginBottom: '2rem' }}>
-                    <div className="restaurant-name-badge" style={{ background: 'rgba(59, 130, 246, 0.15)', color: '#60a5fa', padding: '8px 16px', fontSize: '1rem' }}>
-                        <Store size={20} />
-                        {order.restaurant || (order.items && order.items[0]?.restaurant) || 'Main Kitchen'}
+                    <div className="restaurant-name-badge" style={{ 
+                        background: 'rgba(59, 130, 246, 0.25)', 
+                        color: '#fff', 
+                        padding: '12px 24px', 
+                        fontSize: '1.25rem', 
+                        fontWeight: 900,
+                        border: '2px solid rgba(59, 130, 246, 0.4)',
+                        boxShadow: '0 0 20px rgba(59, 130, 246, 0.2)'
+                    }}>
+                        <Store size={24} />
+                        RESTAURANT: {order.restaurant || (order.items && order.items[0]?.restaurant) || 'Main Kitchen'}
                     </div>
                     
                     <div className="address-box">
@@ -223,15 +231,34 @@ const RaiderDashboard = () => {
                         </div>
                     </div>
 
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.5rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.5rem', gap: '1rem' }}>
                         <div className="status-indicator" style={{ background: order.status === 'out_for_delivery' ? 'rgba(245, 158, 11, 0.1)' : 'rgba(59, 130, 246, 0.1)', color: order.status === 'out_for_delivery' ? '#f59e0b' : '#3b82f6' }}>
                             {order.status.replace(/_/g, ' ')}
                         </div>
-                        {order.status === 'out_for_delivery' ? (
-                            <button onClick={() => handleDelivered(order._id || order.id)} className="btn btn-primary" style={{ padding: '1rem 2.5rem', background: '#10b981', borderRadius: '14px', fontWeight: 700 }}>MARK AS DELIVERED</button>
-                        ) : (
-                            <button onClick={() => handleStatusUpdate(order._id || order.id, 'out_for_delivery')} className="btn btn-primary" style={{ padding: '1rem 2.5rem', background: '#f59e0b', borderRadius: '14px', fontWeight: 700 }}>PICKED UP</button>
-                        )}
+                        <div style={{ display: 'flex', gap: '0.75rem', flex: 1, justifyContent: 'flex-end' }}>
+                            <button 
+                                onClick={async () => {
+                                    if (window.confirm('Are you sure you want to cancel this delivery? The user will be notified.')) {
+                                        try {
+                                            await ridersAPI.reject(order._id || order.id);
+                                            showToast('Delivery task cancelled.', 'info');
+                                            fetchOrders();
+                                        } catch (err) {
+                                            showToast('Failed to cancel task.', 'error');
+                                        }
+                                    }
+                                }} 
+                                className="btn btn-outline" 
+                                style={{ color: '#ef4444', borderColor: '#ef4444', borderRadius: '12px', padding: '0.75rem' }}
+                            >
+                                CANCEL TASK
+                            </button>
+                            {order.status === 'out_for_delivery' ? (
+                                <button onClick={() => handleDelivered(order._id || order.id)} className="btn btn-primary" style={{ padding: '1rem 2rem', background: '#10b981', borderRadius: '14px', fontWeight: 700 }}>MARK AS DELIVERED</button>
+                            ) : (
+                                <button onClick={() => handleStatusUpdate(order._id || order.id, 'out_for_delivery')} className="btn btn-primary" style={{ padding: '1rem 2rem', background: '#f59e0b', borderRadius: '14px', fontWeight: 700 }}>PICKED UP</button>
+                            )}
+                        </div>
                     </div>
                 </div>
             ))}

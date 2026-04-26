@@ -141,14 +141,28 @@ const AdminOrders = () => {
                             <div className="order-bi-body">
                                 <div className="order-bi-info-row">
                                     <User size={16} /><span className="auth-label">CLIENT:</span>
-                                    <span className="auth-value">#{order.userId?.slice(-6)}</span>
-                                    {order.customerPhone && <span className="auth-phone">| {order.customerPhone}</span>}
+                                    <span className="auth-value" style={{ color: '#fff', fontWeight: 700 }}>{order.customerName || `USER_${order.userId?.slice(-6)}`}</span>
+                                    {order.customerPhone && <span className="auth-phone"> | {order.customerPhone}</span>}
                                 </div>
-                                <div className="order-bi-info-row">
-                                    <MapPin size={16} /><span className="auth-label">DEST:</span>
-                                    <span className="auth-value">{order.deliveryAddress || order.deliveryRoom}</span>
+                                <div className="order-bi-info-row" style={{ marginTop: '0.5rem', background: 'rgba(255,255,255,0.05)', padding: '0.75rem', borderRadius: '8px' }}>
+                                    <MapPin size={18} style={{ color: '#ef4444' }} />
+                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                        <span className="auth-label" style={{ fontSize: '0.7rem' }}>DELIVERY_ADDRESS:</span>
+                                        <span className="auth-value" style={{ color: '#fff', fontSize: '1rem', fontWeight: 600 }}>{order.deliveryAddress || order.deliveryRoom || 'N/A'}</span>
+                                    </div>
                                 </div>
-                                <div className="order-bi-items">
+                                
+                                {order.rider?.name && (
+                                    <div className="order-bi-info-row" style={{ marginTop: '0.5rem', background: 'rgba(16, 185, 129, 0.1)', padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
+                                        <Truck size={18} style={{ color: '#10b981' }} />
+                                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                            <span className="auth-label" style={{ fontSize: '0.7rem', color: '#10b981' }}>ASSIGNED_RAIDER:</span>
+                                            <span className="auth-value" style={{ color: '#10b981', fontSize: '1rem', fontWeight: 700 }}>{order.rider.name.toUpperCase()}</span>
+                                        </div>
+                                    </div>
+                                )}
+
+                                <div className="order-bi-items" style={{ marginTop: '1rem' }}>
                                     {order.items?.map((it, i) => (
                                         <span key={i} className="bi-item-tag">{it.quantity}x {it.name}</span>
                                     ))}

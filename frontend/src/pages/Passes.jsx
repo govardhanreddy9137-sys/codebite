@@ -185,7 +185,7 @@ const Passes = () => {
                             {isActive && (
                                 <div className="active-badge">
                                     <CheckCircle size={16} />
-                                    ACTIVE: YOU ARE RUNNING WITH THIS PASS
+                                    ACTIVE: YOU ARE CURRENTLY WORKING WITH THIS PASS
                                 </div>
                             )}
 
@@ -235,7 +235,7 @@ const Passes = () => {
                                 {isActive ? (
                                     <div className="active-info" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
                                         <Zap size={18} fill="#10b981" />
-                                        <span style={{ fontWeight: 800 }}>YOU ARE RUNNING WITH THIS PASS</span>
+                                        <span style={{ fontWeight: 800 }}>YOU ARE CURRENTLY WORKING WITH THIS PASS</span>
                                     </div>
                                 ) : canUpgrade ? (
                                     <button

@@ -69,6 +69,41 @@ const Menu = () => {
             animate="visible"
             variants={containerVariants}
         >
+            {/* Floating Cart Indicator */}
+            <AnimatePresence>
+                {cart.length > 0 && (
+                    <motion.div
+                        initial={{ scale: 0, opacity: 0, y: 100 }}
+                        animate={{ scale: 1, opacity: 1, y: 0 }}
+                        exit={{ scale: 0, opacity: 0, y: 100 }}
+                        className="floating-cart-badge"
+                        onClick={() => navigate('/cart')}
+                        style={{
+                            position: 'fixed',
+                            bottom: '2rem',
+                            right: '2rem',
+                            zIndex: 1000,
+                            background: 'var(--primary)',
+                            color: 'white',
+                            padding: '1rem 2rem',
+                            borderRadius: '50px',
+                            boxShadow: '0 10px 30px rgba(255, 90, 54, 0.4)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.75rem',
+                            cursor: 'pointer',
+                            fontWeight: 800,
+                            border: '2px solid rgba(255,255,255,0.2)'
+                        }}
+                    >
+                        <ShoppingCart size={24} />
+                        <span>{cart.reduce((s, i) => s + i.quantity, 0)} ITEMS</span>
+                        <div style={{ width: '1px', height: '20px', background: 'rgba(255,255,255,0.3)' }} />
+                        <span>₹{cart.reduce((s, i) => s + (i.price * i.quantity), 0)}</span>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             {/* Premium Hero Section */}
             <motion.div className="menu-hero glass" variants={itemVariants}>
                 <div className="hero-content">

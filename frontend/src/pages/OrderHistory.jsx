@@ -19,7 +19,7 @@ const STATUS_LABELS = {
 
 const OrderHistory = () => {
     const { orders, addToCart, updateOrderStatus } = useCart();
-    const { user } = useAuth();
+    const { user, updateUser } = useAuth();
     const { toggleWishlist, isInWishlist } = useFood();
     const { showToast } = useToast();
     const navigate = useNavigate();
@@ -38,10 +38,15 @@ const OrderHistory = () => {
     };
 
     const handleCancelOrder = async (orderId) => {
-        if (window.confirm('Cancel this order and get a refund to BitePoints?')) {
+        if (window.confirm('Cancel this order? A ₹5 cancellation fee will be applied to your next order.')) {
             try {
                 await updateOrderStatus(orderId, 'cancelled');
-                showToast('Order cancelled. Refund added to BitePoints! 💰', 'success');
+                // Apply penalty to user profile
+                await updateUser({ 
+                    penalty: (user.penalty || 0) + 5,
+                    lastCancellationReason: 'User aborted order'
+                });
+                showToast('Order cancelled. ₹5 penalty will be added to your next order.', 'warning');
             } catch (err) {
                 showToast('Failed to cancel order.', 'error');
             }
@@ -87,6 +92,57 @@ const OrderHistory = () => {
                             </div>
                         </div>
 
+                        {(order.status === 'ready' && order.rider === null && order.wasAssignedBefore) && (
+                            <motion.div 
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                className="raider-alert-banner"
+                                style={{ 
+                                    background: 'rgba(239, 68, 68, 0.1)', 
+                                    color: '#ef4444', 
+                                    padding: '0.75rem 1rem', 
+                                    fontSize: '0.85rem',
+                                    fontWeight: 700,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.75rem',
+                                    borderBottom: '1px solid rgba(239, 68, 68, 0.2)'
+                                }}
+                            >
+                                <AlertCircle size={18} className="pulse-icon" />
+                                <span>RAIDER_UNASSIGNED: YOUR PREVIOUS RAIDER HAD TO CANCEL. SCANNING FOR A NEW RAIDER...</span>
+                            </motion.div>
+                        )}
+
+                        {/* Interactive Progress Tracking */}
+                        {['pending', 'confirmed', 'preparing', 'ready'].includes(order.status) && (
+                            <div className="order-progress-tracker" style={{ padding: '2rem', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                                <div className="progress-labels" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-secondary)' }}>
+                                    <span style={{ color: order.status === 'pending' ? 'var(--primary)' : 'inherit' }}>PLACED</span>
+                                    <span style={{ color: order.status === 'confirmed' ? 'var(--primary)' : 'inherit' }}>CONFIRMED</span>
+                                    <span style={{ color: order.status === 'preparing' ? 'var(--primary)' : 'inherit' }}>PREPARING</span>
+                                    <span style={{ color: order.status === 'ready' ? 'var(--primary)' : 'inherit' }}>READY</span>
+                                </div>
+                                <div className="progress-bar-bg" style={{ height: '6px', background: 'rgba(255,255,255,0.05)', borderRadius: '3px', position: 'relative' }}>
+                                    <motion.div 
+                                        className="progress-bar-fill"
+                                        initial={{ width: 0 }}
+                                        animate={{ 
+                                            width: order.status === 'pending' ? '12.5%' : 
+                                                   order.status === 'confirmed' ? '37.5%' : 
+                                                   order.status === 'preparing' ? '62.5%' : 
+                                                   order.status === 'ready' ? '87.5%' : '100%' 
+                                        }}
+                                        style={{ height: '100%', background: 'var(--primary)', borderRadius: '3px', boxShadow: '0 0 15px var(--primary)' }}
+                                    />
+                                    <div style={{ position: 'absolute', top: '-4px', left: '12.5%', width: '14px', height: '14px', borderRadius: '50%', background: order.status === 'pending' ? 'var(--primary)' : 'rgba(255,255,255,0.1)', border: '3px solid var(--bg-primary)' }} />
+                                    <div style={{ position: 'absolute', top: '-4px', left: '37.5%', width: '14px', height: '14px', borderRadius: '50%', background: order.status === 'confirmed' ? 'var(--primary)' : 'rgba(255,255,255,0.1)', border: '3px solid var(--bg-primary)' }} />
+                                    <div style={{ position: 'absolute', top: '-4px', left: '62.5%', width: '14px', height: '14px', borderRadius: '50%', background: order.status === 'preparing' ? 'var(--primary)' : 'rgba(255,255,255,0.1)', border: '3px solid var(--bg-primary)' }} />
+                                    <div style={{ position: 'absolute', top: '-4px', left: '87.5%', width: '14px', height: '14px', borderRadius: '50%', background: order.status === 'ready' ? 'var(--primary)' : 'rgba(255,255,255,0.1)', border: '3px solid var(--bg-primary)' }} />
+                                </div>
+                            </div>
+                        )}
+
                         <div className="order-mid-content">
                             <div className="order-items-grid">
                                 {order.items?.map((item, idx) => (
@@ -129,6 +185,12 @@ const OrderHistory = () => {
                                         <span>{order.deliveryAddress}</span>
                                     </div>
                                 )}
+                                {order.status === 'delivered' && (
+                                    <div className="meta-tile" style={{ color: '#fbbf24' }}>
+                                        <Star size={16} fill="#fbbf24" />
+                                        <span>Rate Experience</span>
+                                    </div>
+                                )}
                             </div>
                         </div>
 
@@ -140,7 +202,7 @@ const OrderHistory = () => {
                             </div>
                             
                             <div className="order-cta-group">
-                                {order.status === 'pending' && (
+                                {['pending', 'confirmed', 'preparing'].includes(order.status) && (
                                     <button className="btn btn-outline btn-cancel" onClick={() => handleCancelOrder(order._id || order.id)}>
                                         <XCircle size={18} /> ABORT_ORDER
                                     </button>

@@ -251,7 +251,7 @@ const AdminFood = () => {
                             />
                             <button 
                                 className="bi-action-btn-primary" 
-                                onClick={() => {}}
+                                onClick={() => showToast('Search active: ' + searchTerm, 'info')}
                                 style={{ padding: '0.5rem 1rem' }}
                             >
                                 <Search size={18} /> Search
@@ -275,7 +275,7 @@ const AdminFood = () => {
                             marginTop: '1rem',
                             justifyContent: 'center'
                         }}>
-                            {['all', 'veg', 'nonveg', 'tiffins', 'shakes'].map(cat => (
+                            {['all', 'veg', 'nonveg', 'tiffins', 'shakes', 'deals'].map(cat => (
                                 <button
                                     key={cat}
                                     onClick={() => setSelectedCategory(cat)}
@@ -422,6 +422,16 @@ const AdminFood = () => {
                                         <select value={formData.restaurant} onChange={e => setFormData({...formData, restaurant: e.target.value})} required>
                                             <option value="">SELECT_NODE</option>
                                             {restaurants.map(r => <option key={r._id || r.id} value={r.name}>{r.name ? r.name.toUpperCase() : 'UNKNOWN'}</option>)}
+                                        </select>
+                                    </div>
+                                    <div className="bi-input-group">
+                                        <label>ASSET_CATEGORY</label>
+                                        <select value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} required>
+                                            <option value="tiffins">TIFFINS</option>
+                                            <option value="veg">VEG</option>
+                                            <option value="nonveg">NON-VEG</option>
+                                            <option value="shakes">SHAKES</option>
+                                            <option value="deals">DEALS</option>
                                         </select>
                                     </div>
                                     <div className="bi-input-group">
