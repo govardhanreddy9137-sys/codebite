@@ -45,33 +45,64 @@ const Wishlist = () => {
             animate="visible"
             variants={containerVariants}
         >
-            <motion.div className="menu-header" variants={itemVariants} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4rem' }}>
+            <motion.div className="menu-header" variants={itemVariants} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem', flexWrap: 'wrap', gap: '2rem' }}>
                 <div>
                     <motion.h1 
                         initial={{ scale: 0.9, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ duration: 0.8 }}
-                        style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}
+                        style={{ display: 'flex', alignItems: 'center', gap: '1rem', margin: 0 }}
                     >
-                        Your Favorites <Sparkles size={32} color="var(--primary)" />
+                        Your Favorites <Heart size={32} fill="var(--primary)" color="var(--primary)" />
                     </motion.h1>
-                    <p>A curated collection of your most-loved dishes.</p>
+                    <p style={{ margin: '0.5rem 0 0' }}>A curated collection of your most-loved dishes.</p>
                 </div>
-                {wishlistFoods.length > 0 && (
+                <div style={{ display: 'flex', gap: '1rem' }}>
                     <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className="btn btn-primary"
-                        onClick={() => {
-                            wishlistFoods.forEach(f => addToCart(f));
-                            showToast('All favorites moved to cart!', 'success');
-                        }}
-                        style={{ padding: '1rem 2rem', borderRadius: '16px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.75rem' }}
+                        className="btn btn-outline"
+                        onClick={() => showToast('Wishlist link shared!', 'success')}
+                        style={{ padding: '0.75rem 1.5rem', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '0.75rem' }}
                     >
-                        <ShoppingCart size={20} /> QUICK_ADD_ALL
+                        SHARE_LIST
                     </motion.button>
-                )}
+                    {wishlistFoods.length > 0 && (
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="btn btn-primary"
+                            onClick={() => {
+                                wishlistFoods.forEach(f => addToCart(f));
+                                showToast('All favorites moved to cart!', 'success');
+                            }}
+                            style={{ padding: '0.75rem 1.5rem', borderRadius: '16px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.75rem' }}
+                        >
+                            <ShoppingCart size={20} /> MOVE_ALL
+                        </motion.button>
+                    )}
+                </div>
             </motion.div>
+
+            <div className="vibe-filters" style={{ display: 'flex', gap: '1rem', marginBottom: '3rem', overflowX: 'auto', paddingBottom: '10px' }}>
+                {['All Items', 'Breakfast', 'Main Meals', 'Late Night Snacks'].map(vibe => (
+                    <button 
+                        key={vibe} 
+                        className="glass-btn" 
+                        style={{ 
+                            padding: '0.6rem 1.5rem', 
+                            borderRadius: '30px', 
+                            fontSize: '0.8rem', 
+                            fontWeight: 700, 
+                            border: '1px solid rgba(255,255,255,0.1)',
+                            background: vibe === 'All Items' ? 'var(--primary)' : 'rgba(255,255,255,0.03)',
+                            color: vibe === 'All Items' ? 'white' : 'var(--text-secondary)'
+                        }}
+                    >
+                        {vibe}
+                    </button>
+                ))}
+            </div>
 
             <AnimatePresence mode="popLayout">
                 {wishlistFoods.length === 0 ? (

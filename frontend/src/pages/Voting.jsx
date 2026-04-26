@@ -87,34 +87,68 @@ const Voting = () => {
                 </div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '2rem' }}>
-                <TrendingUp size={24} color="var(--primary)" />
-                <h2 style={{ fontSize: '1.5rem', fontWeight: 800, margin: 0, textTransform: 'uppercase', letterSpacing: '1px' }}>Trending Concepts</h2>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.75rem', marginBottom: '2rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <TrendingUp size={24} color="var(--primary)" />
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: 800, margin: 0, textTransform: 'uppercase', letterSpacing: '1px' }}>Trending Concepts</h2>
+                </div>
+                {user && (
+                    <div className="glass" style={{ padding: '0.5rem 1.5rem', borderRadius: '50px', fontSize: '0.85rem', fontWeight: 700, border: '1px solid rgba(255,48,8,0.2)' }}>
+                        🚀 LAB CONTRIBUTION: <span style={{ color: 'var(--primary)' }}>{polls.filter(p => p.votedBy?.includes(user?.id)).length} CONCEPTS</span>
+                    </div>
+                )}
             </div>
 
             <div className="breaking-grid">
                 {filteredPolls.map((poll) => {
                     const hasVoted = poll.votedBy?.includes(user?.id);
+                    const status = poll.votes > 15 ? 'IN_TESTING' : poll.votes > 10 ? 'PROTOTYPE' : 'IDEATION';
 
                     return (
-                        <div key={poll.id} className="concept-card">
+                        <div key={poll.id} className="concept-card glass" style={{ border: '1px solid rgba(255,255,255,0.05)', overflow: 'hidden' }}>
                             <div className="concept-image-container">
                                 <img src={poll.image} alt={poll.name} className="concept-image" />
                                 <div className="vote-badge">
                                     <TrendingUp size={14} /> {poll.votes} VOTES
                                 </div>
+                                <div style={{ 
+                                    position: 'absolute', 
+                                    top: '15px', 
+                                    left: '15px', 
+                                    background: status === 'IN_TESTING' ? '#10b981' : '#3b82f6', 
+                                    color: 'white', 
+                                    padding: '4px 10px', 
+                                    borderRadius: '6px', 
+                                    fontSize: '0.6rem', 
+                                    fontWeight: 900,
+                                    letterSpacing: '1px'
+                                }}>
+                                    {status}
+                                </div>
                             </div>
                             <div className="concept-info">
-                                <h3>{poll.name}</h3>
-                                <p>{poll.description}</p>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
-                                    <span style={{ fontWeight: 'bold', color: 'var(--primary)' }}>₹{poll.price} Pre-release</span>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                    <h3>{poll.name}</h3>
+                                    <button 
+                                        className="share-btn" 
+                                        onClick={() => showToast('Concept Link Copied!', 'success')}
+                                        style={{ background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer' }}
+                                    >
+                                        <X size={16} />
+                                    </button>
+                                </div>
+                                <p style={{ fontSize: '0.9rem', opacity: 0.7, margin: '0.5rem 0 1.5rem' }}>{poll.description}</p>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
+                                    <div>
+                                        <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: 600 }}>ANTICIPATED</div>
+                                        <span style={{ fontWeight: 'bold', color: 'var(--primary)' }}>₹{poll.price}</span>
+                                    </div>
                                     <button
                                         className={`btn ${hasVoted ? 'btn-primary' : 'btn-outline'}`}
                                         onClick={() => handleVote(poll.id)}
-                                        style={{ borderRadius: '0', textTransform: 'uppercase', fontWeight: 'bold' }}
+                                        style={{ borderRadius: '12px', textTransform: 'uppercase', fontWeight: 'bold', padding: '0.6rem 1.2rem' }}
                                     >
-                                        {hasVoted ? 'Voted' : 'Vote Hot'}
+                                        {hasVoted ? <CheckCircle size={18} /> : 'VOTE'}
                                     </button>
                                 </div>
                             </div>
