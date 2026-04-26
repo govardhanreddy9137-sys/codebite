@@ -47,10 +47,15 @@ const Cart = () => {
     const personalTotal = cart.reduce((sum, item) => sum + (Number(item.price) || 0) * (Number(item.quantity) || 0), 0);
     const hasPassInCart = cart.some(item => item.isPass);
     const isPassApplicable = Boolean(hasWeeklyPass) || hasPassInCart;
-    const deliveryCharge = isPassApplicable ? 0 : 25; // Free delivery with pass or if buying a pass
     
-    // One item free (the most expensive one) for subscribers
-    const freeItemsAvailable = isPassApplicable ? cart.filter(i => !i.isPass) : [];
+    // Check if free food was already used today
+    const todayStr = new Date().toISOString().split('T')[0];
+    const canUseFreeFoodToday = isPassApplicable && user?.lastFreeFoodDate !== todayStr;
+
+    const deliveryCharge = isPassApplicable ? 0 : 25; // Free delivery for all pass holders
+    
+    // One item free (the most expensive one) if they haven't used it today
+    const freeItemsAvailable = canUseFreeFoodToday ? cart.filter(i => !i.isPass) : [];
     const freeItemValue = freeItemsAvailable.length > 0 ? Math.max(...freeItemsAvailable.map(i => Number(i.price) || 0)) : 0;
     
     const discountApplied = freeItemValue;
@@ -371,7 +376,10 @@ const Cart = () => {
                             </div>
                             {isPassApplicable && (
                                 <div className="fee-row pass-discount" style={{ color: '#10b981' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Zap size={14} /> Subscription Benefit: One Item FREE</div>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                        <Zap size={14} /> 
+                                        {canUseFreeFoodToday ? 'Daily Benefit: One Item FREE' : 'Daily Free Item: ALREADY USED TODAY'}
+                                    </div>
                                     <span>-₹{discountApplied}</span>
                                 </div>
                             )}
@@ -383,7 +391,7 @@ const Cart = () => {
                             )}
                             {isPassApplicable && (
                                 <div className="fee-row pass-discount" style={{ color: '#10b981' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Zap size={14} /> Free Delivery Applied</div>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Zap size={14} /> Pass Benefit: FREE Delivery</div>
                                     <span>-₹25.00</span>
                                 </div>
                             )}

@@ -28,7 +28,7 @@ const Passes = () => {
             price: 599,
             duration: '7 days',
             discount: '10%',
-            benefits: ['10% discount on all orders', 'Free delivery', 'Priority support'],
+            benefits: ['1 Free food item per day', 'Zero delivery charges', '10% discount on extra items', 'Priority support'],
             icon: <Star size={24} />,
             color: '#3b82f6',
             popular: false
@@ -39,7 +39,7 @@ const Passes = () => {
             price: 1999,
             duration: '30 days',
             discount: '20%',
-            benefits: ['20% discount on all orders', 'Free delivery', 'Exclusive deals', 'Birthday treat'],
+            benefits: ['1 Free food item per day', 'Zero delivery charges', '20% discount on extra items', 'Exclusive deals'],
             icon: <Crown size={24} />,
             color: '#8b5cf6',
             popular: true
@@ -50,7 +50,7 @@ const Passes = () => {
             price: 4999,
             duration: '90 days',
             discount: '30%',
-            benefits: ['30% discount on all orders', 'Free delivery', 'VIP support', 'Catering discounts', 'Team meals'],
+            benefits: ['1 Free food item per day', 'Zero delivery charges', '30% discount on extra items', 'VIP support', 'Catering deals'],
             icon: <Shield size={24} />,
             color: '#10b981',
             popular: false

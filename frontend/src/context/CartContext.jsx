@@ -152,6 +152,12 @@ export const CartProvider = ({ children }) => {
                 await updateUser({ penalty: 0 });
                 showToast(`Previous penalty of ₹${penaltyAmount} has been paid!`, 'success');
             }
+
+            // Track daily free food usage
+            if (options.discount > 0) {
+                const todayStr = new Date().toISOString().split('T')[0];
+                await updateUser({ lastFreeFoodDate: todayStr });
+            }
             
             clearCart();
             setCurrentOrder(savedOrder);
