@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import { 
     Utensils, LayoutList, Clock, CheckCircle, 
     TrendingUp, Store, ChevronRight, Activity, 
-    DollarSign, Package, AlertCircle, Camera, Edit, Save, X, Users, Phone, MapPin, Download, Database
+    DollarSign, Package, AlertCircle, Camera, Edit, Save, X, Users, Phone, MapPin, Download, Database, Flame
 } from 'lucide-react';
 
 const AdminDashboard = () => {
@@ -398,7 +398,7 @@ const AdminDashboard = () => {
                                         <div style={{ height: '4px', background: 'rgba(255,255,255,0.05)', borderRadius: '2px', marginTop: '6px', overflow: 'hidden' }}>
                                             <motion.div 
                                                 initial={{ width: 0 }}
-                                                animate={{ width: `${(count / topItems[0][1]) * 100}%` }}
+                                                animate={{ width: `${(count / (topItems[0][1] || 1)) * 100}%` }}
                                                 style={{ height: '100%', background: i === 0 ? 'var(--primary)' : 'rgba(255,255,255,0.2)' }}
                                             />
                                         </div>
@@ -425,6 +425,49 @@ const AdminDashboard = () => {
                             ))}
                         </div>
                     )}
+                </motion.div>
+
+                {/* Community Votes Section (AI Concept Lab) */}
+                <motion.div variants={itemVariants} className="glass" style={{ padding: '2rem', borderRadius: '24px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                            <Flame size={20} color="#fbbf24" />
+                            <h2 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Community Hot Picks</h2>
+                        </div>
+                        <Link to="/voting" style={{ color: 'var(--primary)', fontSize: '0.8rem', fontWeight: 600, textDecoration: 'none' }}>Concept Lab</Link>
+                    </div>
+                    {(() => {
+                        const { polls } = useFood();
+                        const topVoted = [...polls].sort((a, b) => b.votes - a.votes).slice(0, 5);
+                        
+                        if (topVoted.length === 0) return <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-secondary)' }}>No votes recorded yet</div>;
+                        
+                        return (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                                {topVoted.map((poll, i) => (
+                                    <div key={poll.id} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                                        <div style={{ width: '40px', height: '40px', borderRadius: '10px', overflow: 'hidden' }}>
+                                            <img src={poll.image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt={poll.name} />
+                                        </div>
+                                        <div style={{ flex: 1 }}>
+                                            <div style={{ fontWeight: 600, fontSize: '1rem' }}>{poll.name}</div>
+                                            <div style={{ height: '4px', background: 'rgba(255,255,255,0.05)', borderRadius: '2px', marginTop: '6px', overflow: 'hidden' }}>
+                                                <motion.div 
+                                                    initial={{ width: 0 }}
+                                                    animate={{ width: `${(poll.votes / (topVoted[0].votes || 1)) * 100}%` }}
+                                                    style={{ height: '100%', background: '#fbbf24' }}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div style={{ textAlign: 'right' }}>
+                                            <div style={{ fontWeight: 800, color: '#fbbf24' }}>{poll.votes}</div>
+                                            <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)' }}>VOTES</div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        );
+                    })()}
                 </motion.div>
 
                 {/* Customer Data Section */}

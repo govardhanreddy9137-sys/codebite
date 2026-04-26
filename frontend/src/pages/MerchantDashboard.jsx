@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Store, TrendingUp, Users, LogOut, Bell, BellOff, CheckCircle, Clock, Activity, Zap, MapPin, ChefHat, Zap as Bolt, XCircle, AlertCircle, Plus, Edit, Trash2, Flame, Trophy, Target, Star, Briefcase, Phone } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useFood } from '../context/FoodContext';
 import { useNavigate } from 'react-router-dom';
-import { ordersAPI, foodsAPI } from '../api.js';
+import { ordersAPI, foodsAPI, uploadAPI } from '../api.js';
 import { useToast } from '../context/ToastContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import './MerchantDashboard.css';
 
 const MerchantDashboard = () => {
     const { user, logout } = useAuth();
+    const { polls } = useFood();
     const { showToast } = useToast();
     const navigate = useNavigate();
     const [orders, setOrders] = useState([]);
@@ -23,6 +25,7 @@ const MerchantDashboard = () => {
     const [foodForm, setFoodForm] = useState({
         name: '', price: '', category: 'veg', description: '', image: '', stock: 50
     });
+    const [uploading, setUploading] = useState(false);
     
     const lastOrderCount = useRef(0);
     const audioContextRef = useRef(null);
@@ -146,6 +149,29 @@ const MerchantDashboard = () => {
             } else {
                 showToast('Failed to accept order: ' + (err.message || 'Unknown error'), 'error');
             }
+        }
+    };
+
+    const handleImageUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        setUploading(true);
+        const formData = new FormData();
+        formData.append('image', file);
+
+        try {
+            const data = await uploadAPI.post(formData);
+            if (data.success) {
+                setFoodForm({ ...foodForm, image: data.imageUrl });
+                showToast('Image uploaded successfully!', 'success');
+            } else {
+                showToast(data.error || 'Upload failed', 'error');
+            }
+        } catch (err) {
+            showToast('Failed to upload image', 'error');
+        } finally {
+            setUploading(false);
         }
     };
 
@@ -471,47 +497,89 @@ const MerchantDashboard = () => {
                         </div>
 
                         <div className="crm-section">
-                            <h2 style={{ marginBottom: '1.5rem', fontSize: '1.5rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                <Users size={24} color="#10b981" /> Top Customers
-                            </h2>
-                            {customerData.length === 0 ? (
-                                <div className="card" style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
-                                    <Users size={48} style={{ opacity: 0.1, marginBottom: '1rem' }} />
-                                    <p>Building your customer base...</p>
+                            <div className="stats-sidebar" style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                                {/* Community Votes Section */}
+                                <motion.div className="card glass-premium" style={{ padding: '2rem' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                            <Flame size={20} color="#fbbf24" />
+                                            <h2 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Community Hot Picks</h2>
+                                        </div>
+                                    </div>
+                                    {(() => {
+                                        const topVoted = [...polls].sort((a, b) => b.votes - a.votes).slice(0, 5);
+                                        if (topVoted.length === 0) return <div style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>No votes recorded yet</div>;
+                                        
+                                        return (
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                                                {topVoted.map((poll, i) => (
+                                                    <div key={poll.id} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                                                        <div style={{ width: '40px', height: '40px', borderRadius: '10px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
+                                                            <img src={poll.image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt={poll.name} />
+                                                        </div>
+                                                        <div style={{ flex: 1 }}>
+                                                            <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{poll.name}</div>
+                                                            <div style={{ height: '4px', background: 'rgba(255,255,255,0.05)', borderRadius: '2px', marginTop: '4px', overflow: 'hidden' }}>
+                                                                <motion.div 
+                                                                    initial={{ width: 0 }}
+                                                                    animate={{ width: `${(poll.votes / (topVoted[0].votes || 1)) * 100}%` }}
+                                                                    style={{ height: '100%', background: '#fbbf24' }}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                        <div style={{ textAlign: 'right' }}>
+                                                            <div style={{ fontWeight: 800, color: '#fbbf24', fontSize: '0.9rem' }}>{poll.votes}</div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        );
+                                    })()}
+                                </motion.div>
+
+                                <div className="customer-data-section">
+                                    <h2 style={{ marginBottom: '1.5rem', fontSize: '1.5rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                        <Users size={24} color="#10b981" /> Top Customers
+                                    </h2>
+                                    {customerData.length === 0 ? (
+                                        <div className="card" style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
+                                            <Users size={48} style={{ opacity: 0.1, marginBottom: '1rem' }} />
+                                            <p>Building your customer base...</p>
+                                        </div>
+                                    ) : (
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                            {customerData.map((customer, i) => (
+                                                <motion.div 
+                                                    key={i} 
+                                                    className="card" 
+                                                    style={{ padding: '1.25rem' }}
+                                                    whileHover={{ x: 5 }}
+                                                >
+                                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                                                        <div style={{ fontWeight: 700, fontSize: '1.1rem', color: 'white' }}>{customer.name}</div>
+                                                        <div style={{ fontWeight: 800, color: '#10b981' }}>₹{customer.totalSpent}</div>
+                                                    </div>
+                                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                                                            <Phone size={14} color="#f59e0b" />
+                                                            {customer.phone}
+                                                        </div>
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                                                            <MapPin size={14} color="#ef4444" />
+                                                            {customer.address}
+                                                        </div>
+                                                    </div>
+                                                    <div style={{ marginTop: '0.75rem', fontSize: '0.8rem', fontWeight: 600, color: 'var(--primary)' }}>
+                                                        {customer.orders} Successful Orders
+                                                    </div>
+                                                </motion.div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
-                            ) : (
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                    {customerData.map((customer, i) => (
-                                        <motion.div 
-                                            key={i} 
-                                            className="card" 
-                                            style={{ padding: '1.25rem' }}
-                                            whileHover={{ x: 5 }}
-                                        >
-                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                                                <div style={{ fontWeight: 700, fontSize: '1.1rem', color: 'white' }}>{customer.name}</div>
-                                                <div style={{ fontWeight: 800, color: '#10b981' }}>₹{customer.totalSpent}</div>
-                                            </div>
-                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                                                    <Phone size={14} color="#f59e0b" />
-                                                    {customer.phone}
-                                                </div>
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                                                    <MapPin size={14} color="#ef4444" />
-                                                    {customer.address}
-                                                </div>
-                                            </div>
-                                            <div style={{ marginTop: '0.75rem', fontSize: '0.8rem', fontWeight: 600, color: 'var(--primary)' }}>
-                                                {customer.orders} Successful Orders
-                                            </div>
-                                        </motion.div>
-                                    ))}
-                                </div>
-                            )}
+                            </div>
                         </div>
                     </div>
-
 
             {/* Food Management Modal */}
             <div>
@@ -572,10 +640,28 @@ const MerchantDashboard = () => {
                                     </select>
                                 </div>
                             </div>
-                            <div>
-                                <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.4rem' }}>Image URL</label>
-                                <input type="text" value={foodForm.image} onChange={e => setFoodForm({...foodForm, image: e.target.value})} className="form-input" placeholder="https://..." />
-                            </div>
+                             <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '1rem', alignItems: 'end' }}>
+                                 <div>
+                                     <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.4rem' }}>Image URL / Upload</label>
+                                     <input type="text" value={foodForm.image} onChange={e => setFoodForm({...foodForm, image: e.target.value})} className="form-input" placeholder="https://..." />
+                                 </div>
+                                 <div style={{ position: 'relative' }}>
+                                     <input 
+                                         type="file" 
+                                         id="food-image-upload" 
+                                         onChange={handleImageUpload} 
+                                         style={{ display: 'none' }} 
+                                         accept="image/*"
+                                     />
+                                     <label 
+                                         htmlFor="food-image-upload" 
+                                         className={`btn ${uploading ? 'btn-secondary' : 'btn-outline'}`}
+                                         style={{ width: '100%', padding: '0.75rem', fontSize: '0.85rem', cursor: uploading ? 'wait' : 'pointer' }}
+                                     >
+                                         {uploading ? 'Uploading...' : 'Upload File'}
+                                     </label>
+                                 </div>
+                             </div>
                             <div>
                                 <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.4rem' }}>Description</label>
                                 <textarea value={foodForm.description} onChange={e => setFoodForm({...foodForm, description: e.target.value})} className="form-input" rows="3"></textarea>

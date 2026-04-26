@@ -621,7 +621,7 @@ const seedRestaurants = async () => {
       image: 'src/images/Mutton Biryani.webp',
       rating: 4.2,
       cuisine: 'South Indian • Home Style',
-      offer: 'Flat 10% off',
+      offer: '20% Off',
       isOpen: true,
       opensAt: '9:00 AM'
     },
@@ -636,10 +636,10 @@ const seedRestaurants = async () => {
     },
     {
       name: 'Kalpana House',
-      image: 'src/images/veg meals.avif',
+      image: '/images/restaurants/kalpana_house.png',
       rating: 3.8,
       cuisine: 'Tiffens • Snacks',
-      offer: 'Buy 2 Get 1',
+      offer: '20% Off',
       isOpen: true,
       opensAt: '7:00 AM'
     },
@@ -648,7 +648,7 @@ const seedRestaurants = async () => {
       image: 'src/images/masala dosa.jpg',
       rating: 4.6,
       cuisine: 'Punjabi • Rich Curry',
-      offer: '15% Off',
+      offer: '20% Off',
       isOpen: true,
       opensAt: '12:00 PM'
     },

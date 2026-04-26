@@ -151,6 +151,8 @@ const Menu = () => {
                         Surprise Me!
                     </button>
                 </motion.div>
+                
+                <HighestVotedItems />
 
                 <motion.div className="restaurant-section" variants={itemVariants} style={{ marginBottom: '4rem' }}>
                     <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'white', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>

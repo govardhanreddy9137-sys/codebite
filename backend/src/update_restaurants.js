@@ -24,7 +24,7 @@ const updateRestaurants = async () => {
             { name: 'Andhra Meals', image: '/images/restaurants/andhra_meals.png' },
             { name: 'Hotel Taj Palace', image: '/images/restaurants/taj_palace.png' },
             { name: 'Taste of Punjab', image: '/images/Butter Chicken.webp' }, // Fallback to a high-quality food photo for now
-            { name: 'Kalpana House', image: '/images/UPMA.webp' },
+            { name: 'Kalpana House', image: '/images/restaurants/kalpana_house.png' },
             { name: 'Home Made Food', image: '/images/Aloo Curry + Chapati.webp' },
             { name: 'Paradise Hotel', image: '/images/hyderabadi dum biryani.webp' },
             { name: 'Ammama Garri Illu', image: '/images/pulihora.webp' },

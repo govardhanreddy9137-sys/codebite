@@ -137,6 +137,12 @@ const Passes = () => {
                                         <span className="stat-item"><Clock size={14}/> {getDaysRemaining()} days left</span>
                                         <span className="stat-item"><Percent size={14}/> {passes.find(p => p.id === user.subscription.planId)?.discount} Discount</span>
                                     </div>
+                                    {passes.some(p => p.price > getActivePassPrice()) && (
+                                        <p style={{ margin: '1rem 0 0', color: '#fbbf24', fontSize: '0.9rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                            <Zap size={14} fill="#fbbf24" />
+                                            UPGRADE AVAILABLE: Get even more benefits below!
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                             <div className="active-pass-actions">
@@ -179,14 +185,14 @@ const Passes = () => {
                             {isActive && (
                                 <div className="active-badge">
                                     <CheckCircle size={16} />
-                                    Active ({daysRemaining} days left)
+                                    ACTIVE: YOU ARE RUNNING WITH THIS PASS
                                 </div>
                             )}
 
                             {canUpgrade && (
                                 <div className="upgrade-badge">
                                     <Zap size={16} />
-                                    Available Upgrade
+                                    UPGRADE
                                 </div>
                             )}
 
@@ -227,9 +233,9 @@ const Passes = () => {
 
                             <div className="pass-actions">
                                 {isActive ? (
-                                    <div className="active-info">
-                                        <Shield size={16} />
-                                        <span>Current Active Plan</span>
+                                    <div className="active-info" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
+                                        <Zap size={18} fill="#10b981" />
+                                        <span style={{ fontWeight: 800 }}>YOU ARE RUNNING WITH THIS PASS</span>
                                     </div>
                                 ) : canUpgrade ? (
                                     <button
@@ -239,6 +245,11 @@ const Passes = () => {
                                         <TrendingUp size={18} />
                                         UPGRADE NOW
                                     </button>
+                                ) : hasAnyActivePass() ? (
+                                    <div className="active-info" style={{ opacity: 0.5, background: 'rgba(255,255,255,0.05)' }}>
+                                        <Shield size={16} />
+                                        <span>Higher Tier Active</span>
+                                    </div>
                                 ) : (
                                     <div className="action-buttons-grid">
                                         <button

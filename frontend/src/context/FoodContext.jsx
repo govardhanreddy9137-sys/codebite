@@ -102,12 +102,13 @@ export const FoodProvider = ({ children }) => {
             const res = await pollsAPI.vote(pollId);
             setPolls(polls.map(p => (p._id || p.id) === pollId ? { 
                 ...p, 
-                votes: (p.votes || 0) + 1, 
+                votes: res.votes, 
                 votedBy: res.voted 
                     ? [...(p.votedBy || []), userId] 
-                    : (p.votedBy || []).filter(id => id !== userId)
+                    : (p.votedBy || []).filter(id => id.toString() !== userId.toString())
             } : p));
-        } catch {
+            return { success: true };
+        } catch (err) {
             // fallback: optimistic update
             setPolls(polls.map(p => {
                 if ((p._id || p.id) === pollId) {
@@ -119,6 +120,7 @@ export const FoodProvider = ({ children }) => {
                 }
                 return p;
             }));
+            return { success: false, error: err.message };
         }
     }, [polls]);
 
